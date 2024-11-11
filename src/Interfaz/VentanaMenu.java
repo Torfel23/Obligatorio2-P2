@@ -26,7 +26,10 @@ public class VentanaMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanelMenu = new javax.swing.JPanel();
+        jlbBienvenido = new javax.swing.JLabel();
+        jlbSeleccione = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuRegistros = new javax.swing.JMenu();
         VentanaRegistroAutor = new javax.swing.JMenuItem();
@@ -43,15 +46,42 @@ public class VentanaMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestión de Librerías - Realizado por: Felipe Torrendell 302851 - Nicholas Davies 282236");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 688, Short.MAX_VALUE)
+        jlbBienvenido.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jlbBienvenido.setText("Bienvenido a tu Gestion de Libreria");
+
+        jlbSeleccione.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        jlbSeleccione.setText("Seleccione una opción del menú para comenzar.");
+
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        jLabel1.setText("Este sistema permite gestionar libros, autores, editoriales y realizar ventas.");
+
+        javax.swing.GroupLayout jPanelMenuLayout = new javax.swing.GroupLayout(jPanelMenu);
+        jPanelMenu.setLayout(jPanelMenuLayout);
+        jPanelMenuLayout.setHorizontalGroup(
+            jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMenuLayout.createSequentialGroup()
+                .addGroup(jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelMenuLayout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanelMenuLayout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(jlbSeleccione))
+                    .addGroup(jPanelMenuLayout.createSequentialGroup()
+                        .addGap(148, 148, 148)
+                        .addComponent(jlbBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 565, Short.MAX_VALUE)
+        jPanelMenuLayout.setVerticalGroup(
+            jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMenuLayout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addComponent(jlbBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(jlbSeleccione)
+                .addGap(68, 68, 68)
+                .addComponent(jLabel1)
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         menuRegistros.setMnemonic('f');
@@ -149,14 +179,14 @@ public class VentanaMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -255,7 +285,10 @@ public class VentanaMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem VentanaRegistroLibro;
     private javax.swing.JMenuItem VentanaVentaAnular;
     private javax.swing.JMenuItem VentanaVentaRegistro;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanelMenu;
+    private javax.swing.JLabel jlbBienvenido;
+    private javax.swing.JLabel jlbSeleccione;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuConsultas;
     private javax.swing.JMenu menuRegistros;
