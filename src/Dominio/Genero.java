@@ -7,16 +7,32 @@ package Dominio;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class Genero {
+     // Attributes
+    private String nombre;
+    private String descripcion;
+
+    // Constructor
+    public Genero(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
     
+    // Getter methods
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    //metodo para imprimir
+    @Override
+    public String toString() {
+        return "Genero{" + "nombre='" + nombre + '\'' + ", descripcion='" + descripcion + '\'' + '}';
+    }   
 }
-/*Atributos:
 
-String nombre
-String descripcion
-Métodos:
-
-Genero(String nombre, String descripcion): Constructor para inicializar un género.
-String getNombre(): Devuelve el nombre del género.
-String getDescripcion(): Devuelve la descripción del género.*/
