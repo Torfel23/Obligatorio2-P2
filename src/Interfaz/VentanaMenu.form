@@ -165,7 +165,7 @@
                           <Component id="jlbBienvenido" min="-2" pref="397" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="145" max="32767" attributes="0"/>
+                  <EmptySpace pref="101" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -178,7 +178,7 @@
                   <Component id="jlbSeleccione" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="252" max="32767" attributes="0"/>
+                  <EmptySpace pref="251" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

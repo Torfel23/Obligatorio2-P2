@@ -4,6 +4,9 @@
  */
 package Interfaz;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author pipetorrendell
@@ -26,21 +29,150 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanelRegistroLibro = new javax.swing.JPanel();
+        jblTituloRegistroEditoriales = new javax.swing.JLabel();
+        lblTituloLibro = new javax.swing.JLabel();
+        lblISBN = new javax.swing.JLabel();
+        lblPrecioCosto = new javax.swing.JLabel();
+        lblPrecioVenta = new javax.swing.JLabel();
+        lblStock = new javax.swing.JLabel();
+        txtTituloLibro = new javax.swing.JTextField();
+        txtISBN = new javax.swing.JTextField();
+        txtPrecioCosto = new javax.swing.JTextField();
+        txtPrecioVenta = new javax.swing.JTextField();
+        txtStock = new javax.swing.JTextField();
+        lblEditorial = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstEditorial = new javax.swing.JList<>();
+        lblGenero = new javax.swing.JLabel();
+        lblAutor = new javax.swing.JLabel();
+        btnCargarFoto = new javax.swing.JButton();
+        lblFoto = new javax.swing.JLabel();
+        btnGuardarLibro = new javax.swing.JButton();
+        btnVolverMenu = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lstAutor = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        lstGenero = new javax.swing.JList<>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Ventana Registro Libro");
+
+        jPanelRegistroLibro.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jblTituloRegistroEditoriales.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jblTituloRegistroEditoriales.setText("Registro de Libros");
+        jblTituloRegistroEditoriales.setToolTipText("");
+        jPanelRegistroLibro.add(jblTituloRegistroEditoriales, new org.netbeans.lib.awtextra.AbsoluteConstraints(235, 23, -1, -1));
+
+        lblTituloLibro.setText("Titulo");
+        jPanelRegistroLibro.add(lblTituloLibro, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 81, -1, -1));
+
+        lblISBN.setText("ISBN");
+        jPanelRegistroLibro.add(lblISBN, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 119, -1, -1));
+
+        lblPrecioCosto.setText("Precio de Costo");
+        jPanelRegistroLibro.add(lblPrecioCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 160, -1, -1));
+
+        lblPrecioVenta.setText("Precio de Venta");
+        jPanelRegistroLibro.add(lblPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 201, -1, -1));
+
+        lblStock.setText("Stock");
+        jPanelRegistroLibro.add(lblStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 242, -1, -1));
+
+        txtTituloLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTituloLibroActionPerformed(evt);
+            }
+        });
+        jPanelRegistroLibro.add(txtTituloLibro, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 78, 126, -1));
+        jPanelRegistroLibro.add(txtISBN, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 119, 128, -1));
+        jPanelRegistroLibro.add(txtPrecioCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 160, -1, -1));
+        jPanelRegistroLibro.add(txtPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 201, -1, -1));
+        jPanelRegistroLibro.add(txtStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 242, 124, -1));
+
+        lblEditorial.setText("Editorial");
+        jPanelRegistroLibro.add(lblEditorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(258, 70, -1, -1));
+
+        jScrollPane1.setViewportView(lstEditorial);
+
+        jPanelRegistroLibro.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(258, 93, 100, 172));
+
+        lblGenero.setText("Genero");
+        jPanelRegistroLibro.add(lblGenero, new org.netbeans.lib.awtextra.AbsoluteConstraints(376, 70, -1, -1));
+
+        lblAutor.setText("Autor");
+        jPanelRegistroLibro.add(lblAutor, new org.netbeans.lib.awtextra.AbsoluteConstraints(526, 70, -1, -1));
+
+        btnCargarFoto.setText("Cargar Foto");
+        btnCargarFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarFotoActionPerformed(evt);
+            }
+        });
+        jPanelRegistroLibro.add(btnCargarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 303, -1, -1));
+
+        lblFoto.setText("Sin Foto");
+        jPanelRegistroLibro.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(235, 382, -1, -1));
+
+        btnGuardarLibro.setText("Guardar");
+        jPanelRegistroLibro.add(btnGuardarLibro, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 379, -1, -1));
+
+        btnVolverMenu.setText("Volver");
+        btnVolverMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverMenuActionPerformed(evt);
+            }
+        });
+        jPanelRegistroLibro.add(btnVolverMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(526, 517, -1, -1));
+
+        lstAutor.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane3.setViewportView(lstAutor);
+
+        jPanelRegistroLibro.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(376, 93, 100, 172));
+
+        lstGenero.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane4.setViewportView(lstGenero);
+
+        jPanelRegistroLibro.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(526, 93, 100, 172));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelRegistroLibro, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelRegistroLibro, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtTituloLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloLibroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTituloLibroActionPerformed
+
+    private void btnCargarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarFotoActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+        }
+    }//GEN-LAST:event_btnCargarFotoActionPerformed
+
+    private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
+        VentanaMenu menu = new VentanaMenu();
+        menu.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnVolverMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +210,30 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCargarFoto;
+    private javax.swing.JButton btnGuardarLibro;
+    private javax.swing.JButton btnVolverMenu;
+    private javax.swing.JPanel jPanelRegistroLibro;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel jblTituloRegistroEditoriales;
+    private javax.swing.JLabel lblAutor;
+    private javax.swing.JLabel lblEditorial;
+    private javax.swing.JLabel lblFoto;
+    private javax.swing.JLabel lblGenero;
+    private javax.swing.JLabel lblISBN;
+    private javax.swing.JLabel lblPrecioCosto;
+    private javax.swing.JLabel lblPrecioVenta;
+    private javax.swing.JLabel lblStock;
+    private javax.swing.JLabel lblTituloLibro;
+    private javax.swing.JList<String> lstAutor;
+    private javax.swing.JList<String> lstEditorial;
+    private javax.swing.JList<String> lstGenero;
+    private javax.swing.JTextField txtISBN;
+    private javax.swing.JTextField txtPrecioCosto;
+    private javax.swing.JTextField txtPrecioVenta;
+    private javax.swing.JTextField txtStock;
+    private javax.swing.JTextField txtTituloLibro;
     // End of variables declaration//GEN-END:variables
 }

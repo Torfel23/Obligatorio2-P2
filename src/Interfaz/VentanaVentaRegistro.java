@@ -26,21 +26,221 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanelVentaRegistro = new javax.swing.JPanel();
+        lblNumeroFactura = new javax.swing.JLabel();
+        jblTituloRegistroVentas = new javax.swing.JLabel();
+        txtNumeroFactura = new javax.swing.JTextField();
+        lblFechaVenta = new javax.swing.JLabel();
+        txtFechaVenta = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtClienteVenta = new javax.swing.JTextField();
+        lblLibrosLista = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstLibros = new javax.swing.JList<>();
+        lblVentaLista = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lstVenta = new javax.swing.JList<>();
+        btnAgregarLibro = new javax.swing.JButton();
+        btnQuitarLibro = new javax.swing.JButton();
+        lblTotal = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
+        btnRegistrarVenta = new javax.swing.JButton();
+        btnVolverMenu = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Ventana Registro de Venta");
+
+        lblNumeroFactura.setText("Factura");
+
+        jblTituloRegistroVentas.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jblTituloRegistroVentas.setText("Registro de Ventas");
+        jblTituloRegistroVentas.setToolTipText("");
+
+        txtNumeroFactura.setEditable(false);
+
+        lblFechaVenta.setText("Fecha");
+
+        txtFechaVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaVentaActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Cliente");
+
+        txtClienteVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClienteVentaActionPerformed(evt);
+            }
+        });
+
+        lblLibrosLista.setText("Libros");
+
+        jScrollPane1.setViewportView(lstLibros);
+
+        lblVentaLista.setText("Venta");
+
+        jScrollPane2.setViewportView(lstVenta);
+
+        btnAgregarLibro.setText("->");
+        btnAgregarLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarLibroActionPerformed(evt);
+            }
+        });
+
+        btnQuitarLibro.setText("<-");
+        btnQuitarLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarLibroActionPerformed(evt);
+            }
+        });
+
+        lblTotal.setText("Total:");
+
+        txtTotal.setEditable(false);
+
+        btnRegistrarVenta.setText("Registrar");
+
+        btnVolverMenu.setText("Volver");
+        btnVolverMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverMenuActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelVentaRegistroLayout = new javax.swing.GroupLayout(jPanelVentaRegistro);
+        jPanelVentaRegistro.setLayout(jPanelVentaRegistroLayout);
+        jPanelVentaRegistroLayout.setHorizontalGroup(
+            jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                        .addGap(245, 245, 245)
+                        .addComponent(jblTituloRegistroVentas))
+                    .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblLibrosLista)
+                                    .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                        .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnAgregarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnQuitarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblVentaLista)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                                        .addComponent(lblTotal)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVentaRegistroLayout.createSequentialGroup()
+                                .addComponent(lblNumeroFactura)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNumeroFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                                .addComponent(lblFechaVenta)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(106, 106, 106)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtClienteVenta)))))
+                .addGap(57, 57, 57))
+            .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                .addGap(138, 138, 138)
+                .addComponent(btnRegistrarVenta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVolverMenu)
+                .addGap(148, 148, 148))
+        );
+        jPanelVentaRegistroLayout.setVerticalGroup(
+            jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jblTituloRegistroVentas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNumeroFactura)
+                    .addComponent(txtNumeroFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaVenta)
+                    .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtClienteVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLibrosLista)
+                    .addComponent(lblVentaLista))
+                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)))
+                    .addGroup(jPanelVentaRegistroLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(btnAgregarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnQuitarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(28, 28, 28)
+                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotal)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(jPanelVentaRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegistrarVenta)
+                    .addComponent(btnVolverMenu))
+                .addGap(92, 92, 92))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelVentaRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelVentaRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtFechaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaVentaActionPerformed
+
+    private void txtClienteVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClienteVentaActionPerformed
+
+    private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarLibroActionPerformed
+
+    private void btnQuitarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarLibroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnQuitarLibroActionPerformed
+
+    private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
+        VentanaMenu menu = new VentanaMenu();
+        menu.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnVolverMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +278,25 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarLibro;
+    private javax.swing.JButton btnQuitarLibro;
+    private javax.swing.JButton btnRegistrarVenta;
+    private javax.swing.JButton btnVolverMenu;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanelVentaRegistro;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jblTituloRegistroVentas;
+    private javax.swing.JLabel lblFechaVenta;
+    private javax.swing.JLabel lblLibrosLista;
+    private javax.swing.JLabel lblNumeroFactura;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblVentaLista;
+    private javax.swing.JList<String> lstLibros;
+    private javax.swing.JList<String> lstVenta;
+    private javax.swing.JTextField txtClienteVenta;
+    private javax.swing.JTextField txtFechaVenta;
+    private javax.swing.JTextField txtNumeroFactura;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

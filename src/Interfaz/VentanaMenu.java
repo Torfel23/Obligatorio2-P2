@@ -70,7 +70,7 @@ public class VentanaMenu extends javax.swing.JFrame {
                     .addGroup(jPanelMenuLayout.createSequentialGroup()
                         .addGap(148, 148, 148)
                         .addComponent(jlbBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         jPanelMenuLayout.setVerticalGroup(
             jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,7 +81,7 @@ public class VentanaMenu extends javax.swing.JFrame {
                 .addComponent(jlbSeleccione)
                 .addGap(68, 68, 68)
                 .addComponent(jLabel1)
-                .addContainerGap(252, Short.MAX_VALUE))
+                .addContainerGap(251, Short.MAX_VALUE))
         );
 
         menuRegistros.setMnemonic('f');
