@@ -43,7 +43,7 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
         btnGuardarAutor = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         lstAutoresRegistrados = new javax.swing.JList<>();
-        btnVolver = new javax.swing.JButton();
+        btnVolverMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registro de Autores");
@@ -76,10 +76,10 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(lstAutoresRegistrados);
 
-        btnVolver.setText("Volver");
-        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+        btnVolverMenu.setText("Volver");
+        btnVolverMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVolverActionPerformed(evt);
+                btnVolverMenuActionPerformed(evt);
             }
         });
 
@@ -95,7 +95,7 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
                 .addGroup(jPanelRegistroAutorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelRegistroAutorLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnVolver))
+                        .addComponent(btnVolverMenu))
                     .addGroup(jPanelRegistroAutorLayout.createSequentialGroup()
                         .addGap(60, 60, 60)
                         .addGroup(jPanelRegistroAutorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +144,7 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(btnVolver)
+                .addComponent(btnVolverMenu)
                 .addGap(54, 54, 54))
         );
 
@@ -176,11 +176,11 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnGuardarAutorActionPerformed
 
-    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+    private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
         VentanaMenu menu = new VentanaMenu(); 
         menu.setVisible(true); 
         dispose();
-    }//GEN-LAST:event_btnVolverActionPerformed
+    }//GEN-LAST:event_btnVolverMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,7 +219,7 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardarAutor;
-    private javax.swing.JButton btnVolver;
+    private javax.swing.JButton btnVolverMenu;
     private javax.swing.JPanel jPanelRegistroAutor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
