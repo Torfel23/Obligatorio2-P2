@@ -7,15 +7,26 @@ package Dominio;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class Editorial {
-    /*Atributos:
+    //Atributos:
+    
+    private String nombre;
+    private String paisOrigen;
+    
+    //Métodos:
 
-String nombre
-String paisOrigen
-Métodos:
+    public String getNombre() {
+        return nombre;
+    }
 
-Editorial(String nombre, String paisOrigen): Constructor para inicializar una editorial.
-String getNombre(): Devuelve el nombre de la editorial.
-String getPaisOrigen(): Devuelve el país de origen.*/
+    public String getPaisOrigen() {
+        return paisOrigen;
+    }
+
+    //metodo para imprimir
+    public String toString() {
+        return "Editorial{" + "nombre='" + nombre + '\'' + ", paisOrigen='" + paisOrigen + '\'' + '}';
+    }
 }
