@@ -30,7 +30,6 @@ public class Genero {
     }
 
     //metodo para imprimir
-    @Override
     public String toString() {
         return "Genero{" + "nombre='" + nombre + '\'' + ", descripcion='" + descripcion + '\'' + '}';
     }   
