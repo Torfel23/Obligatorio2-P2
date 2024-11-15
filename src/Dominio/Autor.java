@@ -39,7 +39,6 @@ public class Autor {
     }
 
     //metodo para imprimir
-    @Override
     public String toString() {
         return "Autor{" +
                 "nombre='" + nombre + '\'' +
