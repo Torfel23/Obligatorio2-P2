@@ -7,29 +7,89 @@ package Dominio;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class Libro {
-    /*Atributos:
+    // Atributos:
+    private String isbn;
+    private String titulo;
+    private Editorial editorial;
+    private Genero genero;
+    private Autor autor;
+    private double precioCosto;
+    private double precioVenta;
+    private int stock;
+    private String foto; // Path or filename for the book cover image
 
-String isbn
-String titulo
-Editorial editorial
-Genero genero
-Autor autor
-double precioCosto
-double precioVenta
-int stock
-String foto (ruta o nombre del archivo)
-Métodos:
+    // Constructor:
+    public Libro(String isbn, String titulo, Editorial editorial, Genero genero, Autor autor, 
+                 double precioCosto, double precioVenta, int stock, String foto) {
+        this.isbn = isbn;
+        this.titulo = titulo;
+        this.editorial = editorial;
+        this.genero = genero;
+        this.autor = autor;
+        this.precioCosto = precioCosto;
+        this.precioVenta = precioVenta;
+        this.stock = stock;
+        this.foto = foto;
+    }
 
-Libro(String isbn, String titulo, Editorial editorial, Genero genero, Autor autor, double precioCosto, double precioVenta, int stock, String foto): Constructor.
-String getIsbn(): Devuelve el ISBN.
-String getTitulo(): Devuelve el título del libro.
-Editorial getEditorial(): Devuelve la editorial del libro.
-Genero getGenero(): Devuelve el género del libro.
-Autor getAutor(): Devuelve el autor del libro.
-double getPrecioCosto(): Devuelve el precio de costo.
-double getPrecioVenta(): Devuelve el precio de venta.
-int getStock(): Devuelve la cantidad en stock.
-void setStock(int stock): Actualiza el stock del libro.*/
+    // Métodos:
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public Editorial getEditorial() {
+        return editorial;
+    }
+
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public double getPrecioCosto() {
+        return precioCosto;
+    }
+
+    public double getPrecioVenta() {
+        return precioVenta;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+    
+    public String getFoto() {
+        return foto;
+    }
+
+    // Setter method for stock
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+
+    //metodo para imprimir
+    public String toString() {
+        return "Libro{" +
+                "isbn='" + isbn + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", editorial=" + editorial +
+                ", genero=" + genero +
+                ", autor=" + autor +
+                ", precioCosto=" + precioCosto +
+                ", precioVenta=" + precioVenta +
+                ", stock=" + stock +
+                ", foto='" + foto + '\'' +
+                '}';
+    }
 }
