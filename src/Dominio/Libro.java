@@ -1,15 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Dominio;
+
+import java.io.Serializable;
 
 /**
  *
  * @author pipetorrendell
  * @author nicholasdavies
  */
-public class Libro {
+public class Libro implements Serializable{
     // Atributos:
     private String isbn;
     private String titulo;

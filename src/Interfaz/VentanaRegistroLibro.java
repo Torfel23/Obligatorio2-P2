@@ -4,6 +4,7 @@
  */
 package Interfaz;
 
+import Dominio.Sistema;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -13,10 +14,13 @@ import javax.swing.JFileChooser;
  */
 public class VentanaRegistroLibro extends javax.swing.JFrame {
 
+    private Sistema sistema;
+
     /**
      * Creates new form VentanaRegistroLibro
      */
-    public VentanaRegistroLibro() {
+    public VentanaRegistroLibro(Sistema sistema) {
+        this.sistema = sistema;
         initComponents();
     }
 
@@ -169,7 +173,7 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCargarFotoActionPerformed
 
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
-        VentanaMenu menu = new VentanaMenu();
+        VentanaMenu menu = new VentanaMenu(sistema);
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
@@ -204,7 +208,8 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaRegistroLibro().setVisible(true);
+                Sistema sistema = Sistema.loadData("data/sistema.ser");
+                new VentanaRegistroLibro(sistema).setVisible(true);
             }
         });
     }

@@ -4,6 +4,7 @@
  */
 package Dominio;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @author pipetorrendell
  * @author nicholasdavies
  */
-public class Autor {
+public class Autor implements Serializable{
     
     /*Atributos:*/
     private String nombre;

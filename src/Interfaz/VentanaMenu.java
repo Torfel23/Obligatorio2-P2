@@ -4,17 +4,22 @@
  */
 package Interfaz;
 
+import Dominio.Sistema;
+
 /**
  *
  * @author pipetorrendell
  */
 public class VentanaMenu extends javax.swing.JFrame {
 
+    private Sistema sistema;
+
     /**
      * Creates new form VentanaMenu
      */
-    public VentanaMenu() {
-        initComponents();
+    public VentanaMenu(Sistema sistema) {
+        this.sistema = sistema;
+        initComponents(); // Método para inicializar los componentes de la ventana
     }
 
     /**
@@ -194,49 +199,49 @@ public class VentanaMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void VentanaRegistroLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaRegistroLibroActionPerformed
-        VentanaRegistroLibro ventanaLibro = new VentanaRegistroLibro();
+        VentanaRegistroLibro ventanaLibro = new VentanaRegistroLibro(sistema);
         ventanaLibro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaRegistroLibroActionPerformed
 
     private void VentanaRegistroAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaRegistroAutorActionPerformed
-        VentanaRegistroAutor ventanaAutor = new VentanaRegistroAutor();
+        VentanaRegistroAutor ventanaAutor = new VentanaRegistroAutor(sistema);
         ventanaAutor.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaRegistroAutorActionPerformed
 
     private void VentanaRegistroEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaRegistroEditorialActionPerformed
-        VentanaRegistroEditorial ventanaEditorial = new VentanaRegistroEditorial();
+        VentanaRegistroEditorial ventanaEditorial = new VentanaRegistroEditorial(sistema);
         ventanaEditorial.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaRegistroEditorialActionPerformed
 
     private void VentanaRegistroGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaRegistroGeneroActionPerformed
-        VentanaRegistroGenero ventanaGenero = new VentanaRegistroGenero();
+        VentanaRegistroGenero ventanaGenero = new VentanaRegistroGenero(sistema);
         ventanaGenero.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaRegistroGeneroActionPerformed
 
     private void VentanaConsultaLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaConsultaLibroActionPerformed
-        VentanaConsultaLibro ventanaConsultaLibro = new VentanaConsultaLibro();
+        VentanaConsultaLibro ventanaConsultaLibro = new VentanaConsultaLibro(sistema);
         ventanaConsultaLibro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaConsultaLibroActionPerformed
 
     private void VentanaConsultaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaConsultaVentaActionPerformed
-        VentanaConsultaVentas ventanaConsultaVentas = new VentanaConsultaVentas();
+        VentanaConsultaVentas ventanaConsultaVentas = new VentanaConsultaVentas(sistema);
         ventanaConsultaVentas.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaConsultaVentaActionPerformed
 
     private void VentanaVentaRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaVentaRegistroActionPerformed
-        VentanaVentaRegistro ventanaVenta = new VentanaVentaRegistro();
+        VentanaVentaRegistro ventanaVenta = new VentanaVentaRegistro(sistema);
         ventanaVenta.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaVentaRegistroActionPerformed
 
     private void VentanaVentaAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VentanaVentaAnularActionPerformed
-        VentanaVentaAnular ventanaAnular = new VentanaVentaAnular();
+        VentanaVentaAnular ventanaAnular = new VentanaVentaAnular(sistema);
         ventanaAnular.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VentanaVentaAnularActionPerformed
@@ -271,9 +276,11 @@ public class VentanaMenu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaMenu().setVisible(true);
+                Sistema sistema = Sistema.loadData("data/sistema.ser");
+                new VentanaMenu(sistema).setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

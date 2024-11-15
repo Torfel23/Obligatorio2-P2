@@ -1,45 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dominio;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 /**
  *
  * @author pipetorrendell
  * @author nicholasdavies
  */
 public class Sistema {
-    /*
-    
-    Métodos:
-
-void agregarEditorial(Editorial editorial): Añade una nueva editorial al sistema.
-void agregarGenero(Genero genero): Añade un nuevo género al sistema.
-void agregarAutor(Autor autor): Añade un nuevo autor al sistema.
-void agregarLibro(Libro libro): Añade un nuevo libro al sistema.
-void registrarVenta(Venta venta): Registra una nueva venta.
-List<Autor> getAutores(): Devuelve la lista de autores registrados.
-List<Genero> getGeneros(): Devuelve la lista de géneros disponibles.
-List<Libro> buscarLibros(String titulo, String autor, String genero): Busca libros según el título, autor o género.
-List<Venta> getVentasPorIsbn(String isbn): Devuelve las ventas relacionadas con un ISBN específico.
-boolean autorExiste(String nombre): Verifica si un autor con un nombre específico ya está registrado.
-boolean libroExiste(String isbn): Verifica si un libro con un ISBN específico ya está registrado.*/
-    
-    
-    
-   // Atributos:
     private List<Editorial> editoriales;
     private List<Genero> generos;
     private List<Autor> autores;
     private List<Libro> libros;
-    private List<Venta> ventas; 
-    
-    
-     // Constructor:
+    private List<Venta> ventas;
+
+    // Constructor:
     public Sistema() {
         this.editoriales = new ArrayList<>();
         this.generos = new ArrayList<>();
@@ -47,16 +23,34 @@ boolean libroExiste(String isbn): Verifica si un libro con un ISBN específico y
         this.libros = new ArrayList<>();
         this.ventas = new ArrayList<>();
     }
-    
-    // Methods
+
+    // Métodos para persistencia
+    public void saveData(String filePath) {
+    try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(Paths.get(filePath)))) {
+        out.writeObject(this); // Serializa el objeto `Sistema` completo
+    } catch (IOException e) {
+        System.out.println("Error al guardar los datos: " + e.getMessage());
+    }
+}
+
+public static Sistema loadData(String filePath) {
+    try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(Paths.get(filePath)))) {
+        return (Sistema) in.readObject(); // Deserializa y devuelve el objeto `Sistema`
+    } catch (IOException | ClassNotFoundException e) {
+        System.out.println("Error al cargar los datos: " + e.getMessage());
+    }
+    return new Sistema(); // Devuelve un sistema vacío si falla la carga
+}
+
+    // Métodos básicos
     public void agregarEditorial(Editorial editorial) {
-        if (editorial != null) {
+        if (editorial != null && editoriales.stream().noneMatch(e -> e.getNombre().equalsIgnoreCase(editorial.getNombre()))) {
             editoriales.add(editorial);
         }
     }
 
     public void agregarGenero(Genero genero) {
-        if (genero != null) {
+        if (genero != null && generos.stream().noneMatch(g -> g.getNombre().equalsIgnoreCase(genero.getNombre()))) {
             generos.add(genero);
         }
     }
@@ -76,55 +70,45 @@ boolean libroExiste(String isbn): Verifica si un libro con un ISBN específico y
     public void registrarVenta(Venta venta) {
         if (venta != null) {
             ventas.add(venta);
+            venta.actualizarStock();
         }
     }
 
-    public List<Autor> getAutores() {
-        return new ArrayList<>(autores);
+    // Métodos de consulta
+    public List<Editorial> getEditoriales() {
+        return new ArrayList<>(editoriales);
     }
 
     public List<Genero> getGeneros() {
         return new ArrayList<>(generos);
     }
 
+    public List<Autor> getAutores() {
+        return new ArrayList<>(autores);
+    }
+
+    public List<Libro> getLibros() {
+        return new ArrayList<>(libros);
+    }
+
     public List<Libro> buscarLibros(String titulo, String autor, String genero) {
-        List<Libro> resultados = new ArrayList<>();
-        for (Libro libro : libros) {
-            boolean coincideTitulo = (titulo == null || libro.getTitulo().toLowerCase().contains(titulo.toLowerCase()));
-            boolean coincideAutor = (autor == null || libro.getAutor().getNombre().toLowerCase().contains(autor.toLowerCase()));
-            boolean coincideGenero = (genero == null || libro.getGenero().getNombre().toLowerCase().contains(genero.toLowerCase()));
-            if (coincideTitulo && coincideAutor && coincideGenero) {
-                resultados.add(libro);
-            }
-        }
-        return resultados;
+        return libros.stream()
+                .filter(libro -> (titulo == null || libro.getTitulo().toLowerCase().contains(titulo.toLowerCase())) &&
+                        (autor == null || libro.getAutor().getNombre().toLowerCase().contains(autor.toLowerCase())) &&
+                        (genero == null || libro.getGenero().getNombre().toLowerCase().contains(genero.toLowerCase())))
+                .toList();
     }
 
     public List<Venta> getVentasPorIsbn(String isbn) {
-    List<Venta> resultados = new ArrayList<>();
-    for (Venta venta : ventas) {
-        if (venta.getLibro(isbn) != null) { // Check if any Libro in the sale matches the ISBN
-            resultados.add(venta);
-        }
+        return ventas.stream().filter(venta -> venta.getLibro(isbn) != null).toList();
     }
-    return resultados;
-}
 
+    // Métodos auxiliares
     public boolean autorExiste(String nombre) {
-        for (Autor autor : autores) {
-            if (autor.getNombre().equalsIgnoreCase(nombre)) {
-                return true;
-            }
-        }
-        return false;
+        return autores.stream().anyMatch(autor -> autor.getNombre().equalsIgnoreCase(nombre));
     }
 
     public boolean libroExiste(String isbn) {
-        for (Libro libro : libros) {
-            if (libro.getIsbn().equalsIgnoreCase(isbn)) {
-                return true;
-            }
-        }
-        return false;
+        return libros.stream().anyMatch(libro -> libro.getIsbn().equalsIgnoreCase(isbn));
     }
 }

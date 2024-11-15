@@ -4,6 +4,7 @@
  */
 package Interfaz;
 
+import Dominio.Sistema;
 import javax.swing.ListSelectionModel;
 
 /**
@@ -12,10 +13,13 @@ import javax.swing.ListSelectionModel;
  */
 public class VentanaRegistroAutor extends javax.swing.JFrame {
 
+    private Sistema sistema;
+
     /**
      * Creates new form VentanaRegistroAutor
      */
-    public VentanaRegistroAutor() {
+    public VentanaRegistroAutor(Sistema sistema) {
+        this.sistema = sistema;
         initComponents();
         lstGeneros.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -177,8 +181,8 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarAutorActionPerformed
 
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
-        VentanaMenu menu = new VentanaMenu(); 
-        menu.setVisible(true); 
+        VentanaMenu menu = new VentanaMenu(sistema);
+        menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
 
@@ -212,9 +216,11 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaRegistroAutor().setVisible(true);
+                Sistema sistema = Sistema.loadData("data/sistema.ser");
+                new VentanaRegistroAutor(sistema).setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

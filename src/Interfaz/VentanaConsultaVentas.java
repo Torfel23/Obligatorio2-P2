@@ -4,16 +4,21 @@
  */
 package Interfaz;
 
+import Dominio.Sistema;
+
 /**
  *
  * @author pipetorrendell
  */
 public class VentanaConsultaVentas extends javax.swing.JFrame {
 
+    private Sistema sistema;
+
     /**
      * Creates new form VentanaConsultaVentas
      */
-    public VentanaConsultaVentas() {
+    public VentanaConsultaVentas(Sistema sistema) {
+        this.sistema = sistema;
         initComponents();
     }
 
@@ -168,10 +173,11 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTotalRecaudado)
-                    .addComponent(lblEjemplaresVendidos)
-                    .addComponent(lblTotalGanancia))
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTotalRecaudado, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblEjemplaresVendidos)
+                        .addComponent(lblTotalGanancia)))
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -207,7 +213,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
-        VentanaMenu menu = new VentanaMenu();
+        VentanaMenu menu = new VentanaMenu(sistema);
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
@@ -242,9 +248,11 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaConsultaVentas().setVisible(true);
+                Sistema sistema = Sistema.loadData("data/sistema.ser");
+                new VentanaConsultaVentas(sistema).setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

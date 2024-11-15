@@ -4,12 +4,14 @@
  */
 package Dominio;
 
+import java.io.Serializable;
+
 /**
  *
  * @author pipetorrendell
  * @author nicholasdavies
  */
-public class Editorial {
+public class Editorial implements Serializable{
     //Atributos:
     
     private String nombre;

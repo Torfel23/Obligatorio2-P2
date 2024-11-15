@@ -4,6 +4,7 @@
  */
 package Interfaz;
 
+import Dominio.Sistema;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -12,13 +13,15 @@ import javax.swing.table.*;
  * @author pipetorrendell
  */
 public class VentanaRegistroEditorial extends javax.swing.JFrame {
+    private Sistema sistema;
 
     /**
      * Creates new form VentanaRegistroEditorial
      */
     private DefaultTableModel modeloTablaEditoriales;
 
-    public VentanaRegistroEditorial() {
+    public VentanaRegistroEditorial(Sistema sistema) {
+        this.sistema = sistema;
         initComponents();
         modeloTablaEditoriales = new DefaultTableModel(new String[]{"Nombre", "País de Origen"}, 0);
         tblTablaEditoriales.setModel(modeloTablaEditoriales);
@@ -197,7 +200,7 @@ public class VentanaRegistroEditorial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarEditorialActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VentanaMenu menu = new VentanaMenu(); 
+        VentanaMenu menu = new VentanaMenu(sistema); 
         menu.setVisible(true); 
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -232,7 +235,8 @@ public class VentanaRegistroEditorial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaRegistroEditorial().setVisible(true);
+                Sistema sistema = Sistema.loadData("data/sistema.ser");
+                new VentanaRegistroEditorial(sistema).setVisible(true);
             }
         });
     }

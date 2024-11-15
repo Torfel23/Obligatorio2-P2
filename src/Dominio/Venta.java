@@ -1,35 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dominio;
 
-import java.util.Map;    
-
+import java.io.Serializable;
+import java.util.Map;
 /**
  *
  * @author pipetorrendell
  * @author nicholasdavies
  */
-public class Venta {
-    //Atributos:
+
+public class Venta implements Serializable {
     private int numeroFactura;
     private String fecha;
     private String cliente;
-    private Map<Libro, Integer> librosVendidos; 
+    private Map<Libro, Integer> librosVendidos;
 
-
-    // Constructor
     public Venta(int numeroFactura, String fecha, String cliente, Map<Libro, Integer> librosVendidos) {
+        if (librosVendidos == null || librosVendidos.isEmpty()) {
+            throw new IllegalArgumentException("Debe haber al menos un libro en la venta.");
+        }
         this.numeroFactura = numeroFactura;
         this.fecha = fecha;
         this.cliente = cliente;
         this.librosVendidos = librosVendidos;
     }
 
-    //Métodos:
-        
-    //Getters:
     public int getNumeroFactura() {
         return numeroFactura;
     }
@@ -45,39 +39,24 @@ public class Venta {
     public Map<Libro, Integer> getLibrosVendidos() {
         return librosVendidos;
     }
-    
-    // Retrieves the first Libro in the sale with a matching ISBN
+
     public Libro getLibro(String isbn) {
-        for (Libro libro : librosVendidos.keySet()) {
-            if (libro.getIsbn().equalsIgnoreCase(isbn)) {
-                return libro;
-            }
-        }
-        return null; // Return null if no Libro matches the ISBN
-    }
-    
-    //Calcula el precio total de la venta
-    public double calcularTotal() {
-        double total = 0.0;
-        for (Map.Entry<Libro, Integer> entry : librosVendidos.entrySet()) {
-            Libro libro = entry.getKey();
-            int cantidad = entry.getValue();
-            total += libro.getPrecioVenta() * cantidad;
-        }
-        return total;
-    }
-    
-    //Actualiza el stock de cada libro disminuyéndolo en función de la cantidad vendida
-    public void actualizarStock() {
-        for (Map.Entry<Libro, Integer> entry : librosVendidos.entrySet()) {
-            Libro libro = entry.getKey();
-            int cantidadVendida = entry.getValue();
-            libro.setStock(libro.getStock() - cantidadVendida);
-        }
+        return librosVendidos.keySet().stream()
+                .filter(libro -> libro.getIsbn().equalsIgnoreCase(isbn))
+                .findFirst()
+                .orElse(null);
     }
 
-    //para mostrar detalles de venta
-    
+    public double calcularTotal() {
+        return librosVendidos.entrySet().stream()
+                .mapToDouble(entry -> entry.getKey().getPrecioVenta() * entry.getValue())
+                .sum();
+    }
+
+    public void actualizarStock() {
+        librosVendidos.forEach((libro, cantidad) -> libro.setStock(libro.getStock() - cantidad));
+    }
+
     public String toString() {
         return "Venta{" +
                 "numeroFactura=" + numeroFactura +
@@ -87,5 +66,4 @@ public class Venta {
                 ", totalVenta=" + calcularTotal() +
                 '}';
     }
-
 }

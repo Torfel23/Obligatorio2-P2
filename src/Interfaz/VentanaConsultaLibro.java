@@ -4,16 +4,22 @@
  */
 package Interfaz;
 
+import Dominio.Sistema;
+
 /**
  *
  * @author pipetorrendell
  */
 public class VentanaConsultaLibro extends javax.swing.JFrame {
 
+    private Sistema sistema;
+
     /**
      * Creates new form VentanaConsultaLibro
      */
-    public VentanaConsultaLibro() {
+    public VentanaConsultaLibro(Sistema sistema) {
+        this.sistema = sistema;
+
         initComponents();
     }
 
@@ -144,7 +150,7 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtGenerActionPerformed
 
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
-        VentanaMenu menu = new VentanaMenu();
+        VentanaMenu menu = new VentanaMenu(sistema);
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
@@ -179,9 +185,11 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaConsultaLibro().setVisible(true);
+                Sistema sistema = Sistema.loadData("data/sistema.ser");
+                new VentanaConsultaLibro(sistema).setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
