@@ -5,6 +5,7 @@
 package Interfaz;
 
 import Dominio.Sistema;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -13,6 +14,7 @@ import javax.swing.table.*;
  * @author pipetorrendell
  */
 public class VentanaRegistroEditorial extends javax.swing.JFrame {
+
     private Sistema sistema;
 
     /**
@@ -25,6 +27,11 @@ public class VentanaRegistroEditorial extends javax.swing.JFrame {
         initComponents();
         modeloTablaEditoriales = new DefaultTableModel(new String[]{"Nombre", "País de Origen"}, 0);
         tblTablaEditoriales.setModel(modeloTablaEditoriales);
+
+        // Cargar datos existentes en la tabla
+        sistema.getEditoriales().forEach(editorial
+                -> modeloTablaEditoriales.addRow(new Object[]{editorial.getNombre(), editorial.getPaisOrigen()})
+        );
     }
 
     /**
@@ -39,14 +46,20 @@ public class VentanaRegistroEditorial extends javax.swing.JFrame {
     private void guardarEditorial(java.awt.event.ActionEvent evt) {
         String nombreEditorial = txtNombreEditorial.getText().trim();
         String paisOrigen = txtPaisEditorial.getText().trim();
-        // Validación y almacenamiento de la editorial
-        if (!nombreEditorial.isEmpty() && !paisOrigen.isEmpty()) {
-            actualizarTablaEditoriales(nombreEditorial, paisOrigen);
-            txtNombreEditorial.setText("");
-            txtPaisEditorial.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+
+        if (!sistema.guardarEditorial(nombreEditorial, paisOrigen)) {
+            JOptionPane.showMessageDialog(this, "No se pudo guardar la editorial. Verifique los datos.");
+            return;
         }
+
+        // Actualizar tabla y limpiar campos
+        actualizarTablaEditoriales(nombreEditorial, paisOrigen);
+        txtNombreEditorial.setText("");
+        txtPaisEditorial.setText("");
+
+        // Guardar datos en archivo
+        sistema.saveData("data/sistema.ser");
+
     }
 
     @SuppressWarnings("unchecked")
@@ -200,8 +213,8 @@ public class VentanaRegistroEditorial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarEditorialActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VentanaMenu menu = new VentanaMenu(sistema); 
-        menu.setVisible(true); 
+        VentanaMenu menu = new VentanaMenu(sistema);
+        menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 

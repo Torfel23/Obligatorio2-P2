@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dominio;
 
 import java.io.Serializable;
@@ -11,12 +7,18 @@ import java.io.Serializable;
  * @author pipetorrendell
  * @author nicholasdavies
  */
-public class Editorial implements Serializable{
-    //Atributos:
-    
+public class Editorial implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+//Atributos:
+
     private String nombre;
     private String paisOrigen;
-    
+
+    public Editorial(String nombre, String paisOrigen) {
+        this.nombre = nombre;
+        this.paisOrigen = paisOrigen;
+    }
     //Métodos:
 
     public String getNombre() {

@@ -4,8 +4,13 @@
  */
 package Interfaz;
 
+import Dominio.Genero;
 import Dominio.Sistema;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,6 +19,7 @@ import javax.swing.ListSelectionModel;
 public class VentanaRegistroAutor extends javax.swing.JFrame {
 
     private Sistema sistema;
+    private DefaultListModel<String> modeloListaAutores;
 
     /**
      * Creates new form VentanaRegistroAutor
@@ -21,8 +27,23 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
     public VentanaRegistroAutor(Sistema sistema) {
         this.sistema = sistema;
         initComponents();
-        lstGeneros.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
+        // Inicializar el modelo de la lista de autores
+        modeloListaAutores = new DefaultListModel<>();
+        lstAutoresRegistrados.setModel(modeloListaAutores);
+
+        // Cargar autores existentes
+        sistema.getAutores().forEach(autor -> modeloListaAutores.addElement(autor.getNombre() + " - " + autor.getNacionalidad()));
+
+        // Configurar la lista de géneros
+        DefaultListModel<String> modeloGeneros = new DefaultListModel<>();
+        sistema.getGeneros().forEach(genero -> modeloGeneros.addElement(genero.getNombre()));
+        lstGeneros.setModel(modeloGeneros);
+        lstGeneros.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    }
+
+    private void actualizarListaAutores(String nombre, String nacionalidad) {
+        modeloListaAutores.addElement(nombre + " - " + nacionalidad);
     }
 
     /**
@@ -177,7 +198,42 @@ public class VentanaRegistroAutor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNacionalidadAutorActionPerformed
 
     private void btnGuardarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarAutorActionPerformed
+        // Obtener datos de los campos
+        String nombre = txtNombreAutor.getText().trim();
+        String nacionalidad = txtNacionalidadAutor.getText().trim();
+        List<String> generosSeleccionados = lstGeneros.getSelectedValuesList();
 
+        // Validar campos
+        if (nombre.isEmpty() || nacionalidad.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (generosSeleccionados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un género.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Convertir nombres de géneros seleccionados a objetos Genero
+        List<Genero> generos = sistema.getGeneros().stream()
+                .filter(g -> generosSeleccionados.contains(g.getNombre()))
+                .toList();
+
+        // Guardar autor en el sistema
+        if (!sistema.guardarAutor(nombre, nacionalidad, generos)) {
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el autor. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Actualizar lista y limpiar campos
+        actualizarListaAutores(nombre, nacionalidad);
+        txtNombreAutor.setText("");
+        txtNacionalidadAutor.setText("");
+        lstGeneros.clearSelection();
+
+        // Guardar cambios en el archivo de persistencia
+        sistema.saveData("data/sistema.ser");
+        JOptionPane.showMessageDialog(this, "Autor guardado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnGuardarAutorActionPerformed
 
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed

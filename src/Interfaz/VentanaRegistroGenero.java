@@ -4,7 +4,10 @@
  */
 package Interfaz;
 
+import Dominio.Genero;
 import Dominio.Sistema;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,6 +16,7 @@ import Dominio.Sistema;
 public class VentanaRegistroGenero extends javax.swing.JFrame {
 
     private Sistema sistema;
+    private DefaultListModel<String> modeloListaGeneros;
 
     /**
      * Creates new form VentanaRegistroGenero
@@ -20,6 +24,17 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
     public VentanaRegistroGenero(Sistema sistema) {
         this.sistema = sistema;
         initComponents();
+        modeloListaGeneros = new DefaultListModel<>();
+        lstGeneros.setModel(modeloListaGeneros);
+
+        // Cargar géneros existentes en la lista
+        sistema.getGeneros().forEach(genero
+                -> modeloListaGeneros.addElement(genero.getNombre() + "-" + genero.getDescripcion())
+        );
+    }
+
+    private void actualizarListaGeneros(String nombre, String descripcion) {
+        modeloListaGeneros.addElement(nombre + "-" + descripcion);
     }
 
     /**
@@ -36,11 +51,12 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
         jlbNombreGenero = new javax.swing.JLabel();
         txtNombreGenero = new javax.swing.JTextField();
         jlbDescripcionGenero = new javax.swing.JLabel();
-        txtDescripcionGenero = new javax.swing.JTextField();
         btnGuardarGenero = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstGeneros = new javax.swing.JList<>();
         btnVolverMenu = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtDescripcionGenero = new javax.swing.JTextArea();
 
         jLabel1.setText("jLabel1");
 
@@ -54,13 +70,12 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
 
         jlbDescripcionGenero.setText("Descripcion");
 
-        txtDescripcionGenero.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarGenero.setText("Guardar");
+        btnGuardarGenero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionGeneroActionPerformed(evt);
+                btnGuardarGeneroActionPerformed(evt);
             }
         });
-
-        btnGuardarGenero.setText("Guardar");
 
         jScrollPane1.setViewportView(lstGeneros);
 
@@ -71,10 +86,23 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
             }
         });
 
+        txtDescripcionGenero.setColumns(20);
+        txtDescripcionGenero.setRows(5);
+        txtDescripcionGenero.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtDescripcionGeneroPropertyChange(evt);
+            }
+        });
+        jScrollPane3.setViewportView(txtDescripcionGenero);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addComponent(btnGuardarGenero)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,31 +111,28 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtNombreGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(102, 102, 102)
+                                .addComponent(jblTituloRegistroGeneros)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtDescripcionGenero)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtNombreGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(66, 66, 66)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                        .addComponent(btnVolverMenu)))
-                .addGap(92, 92, 92))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addComponent(btnGuardarGenero))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(236, 236, 236)
-                        .addComponent(jblTituloRegistroGeneros)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                                .addComponent(btnVolverMenu)))
+                        .addGap(92, 92, 92))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addComponent(jblTituloRegistroGeneros)
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -115,14 +140,17 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
                     .addComponent(txtNombreGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDescripcionGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlbDescripcionGenero))
-                .addGap(18, 18, 18)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jlbDescripcionGenero)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)))
                 .addComponent(btnGuardarGenero)
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVolverMenu))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVolverMenu, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(72, 72, 72))
         );
 
@@ -135,9 +163,33 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
 
-    private void txtDescripcionGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionGeneroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionGeneroActionPerformed
+    private void btnGuardarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarGeneroActionPerformed
+        String nombre = txtNombreGenero.getText().trim();
+        String descripcion = txtDescripcionGenero.getText().trim();
+
+        if (nombre.isEmpty() || descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar ambos campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (sistema.guardarGenero(nombre, descripcion)) {
+            JOptionPane.showMessageDialog(this, "Género registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            actualizarListaGeneros(nombre, descripcion);
+            txtNombreGenero.setText("");
+            txtDescripcionGenero.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "El género ya existe o los datos son inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Guardar datos en archivo
+        sistema.saveData("data/sistema.ser");
+    }//GEN-LAST:event_btnGuardarGeneroActionPerformed
+
+    private void txtDescripcionGeneroPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtDescripcionGeneroPropertyChange
+        txtDescripcionGenero.setLineWrap(true);
+        txtDescripcionGenero.setWrapStyleWord(true);
+
+    }//GEN-LAST:event_txtDescripcionGeneroPropertyChange
 
     /**
      * @param args the command line arguments
@@ -180,11 +232,12 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
     private javax.swing.JButton btnVolverMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel jblTituloRegistroGeneros;
     private javax.swing.JLabel jlbDescripcionGenero;
     private javax.swing.JLabel jlbNombreGenero;
     private javax.swing.JList<String> lstGeneros;
-    private javax.swing.JTextField txtDescripcionGenero;
+    private javax.swing.JTextArea txtDescripcionGenero;
     private javax.swing.JTextField txtNombreGenero;
     // End of variables declaration//GEN-END:variables
 }
