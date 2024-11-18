@@ -160,4 +160,20 @@ public class Sistema implements Serializable {
         return true; // Autor agregado con éxito
     }
 
+    public boolean guardarLibro(String isbn, String titulo, Editorial editorial, Genero genero, Autor autor,
+            double precioCosto, double precioVenta, int stock, String foto) {
+        if (isbn == null || isbn.isEmpty() || titulo == null || titulo.isEmpty()
+                || editorial == null || genero == null || autor == null || stock < 0) {
+            return false; // Datos inválidos
+        }
+
+        if (libros.stream().anyMatch(libro -> libro.getIsbn().equalsIgnoreCase(isbn))) {
+            return false; // Ya existe un libro con ese ISBN
+        }
+
+        Libro nuevoLibro = new Libro(isbn, titulo, editorial, genero, autor, precioCosto, precioVenta, stock, foto);
+        libros.add(nuevoLibro);
+        return true; // Libro guardado con éxito
+    }
+
 }

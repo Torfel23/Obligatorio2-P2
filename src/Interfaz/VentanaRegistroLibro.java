@@ -4,9 +4,20 @@
  */
 package Interfaz;
 
+import Dominio.Autor;
+import Dominio.Editorial;
+import Dominio.Genero;
 import Dominio.Sistema;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +33,163 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
     public VentanaRegistroLibro(Sistema sistema) {
         this.sistema = sistema;
         initComponents();
+        inicializarListas();
+    }
+
+    private void inicializarListas() {
+        // Poblar lista de Editoriales
+        DefaultListModel<Editorial> modeloEditorial = new DefaultListModel<>();
+        sistema.getEditoriales().forEach(modeloEditorial::addElement);
+        lstEditorial.setModel(modeloEditorial);
+        lstEditorial.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JLabel label = new JLabel(value.getNombre());
+            if (isSelected) {
+                label.setBackground(list.getSelectionBackground());
+                label.setForeground(list.getSelectionForeground());
+                label.setOpaque(true);
+            }
+            return label;
+        });
+
+        // Poblar lista de Géneros
+        DefaultListModel<Genero> modeloGenero = new DefaultListModel<>();
+        sistema.getGeneros().forEach(modeloGenero::addElement);
+        lstGenero.setModel(modeloGenero);
+        lstGenero.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JLabel label = new JLabel(value.getNombre());
+            if (isSelected) {
+                label.setBackground(list.getSelectionBackground());
+                label.setForeground(list.getSelectionForeground());
+                label.setOpaque(true);
+            }
+            return label;
+        });
+
+        // Configurar cambio dinámico de autores basado en género seleccionado
+        lstGenero.addListSelectionListener(e -> actualizarListaAutores());
+    }
+
+    private void actualizarListaAutores() {
+        Genero generoSeleccionado = lstGenero.getSelectedValue();
+        if (generoSeleccionado != null) {
+            DefaultListModel<Autor> modeloAutor = new DefaultListModel<>();
+            sistema.getAutores().stream()
+                    .filter(autor -> autor.getGeneros().contains(generoSeleccionado))
+                    .forEach(modeloAutor::addElement);
+            lstAutor.setModel(modeloAutor);
+
+            // Configurar cómo se muestra el autor en la lista
+            lstAutor.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+                JLabel label = new JLabel(value.getNombre());
+                if (isSelected) {
+                    label.setBackground(list.getSelectionBackground());
+                    label.setForeground(list.getSelectionForeground());
+                    label.setOpaque(true);
+                }
+                return label;
+            });
+
+            // Habilitar selección única
+            lstAutor.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        } else {
+            lstAutor.setModel(new DefaultListModel<>()); // Vacía la lista si no hay género seleccionado
+        }
+    }
+
+    private void guardarLibro(java.awt.event.ActionEvent evt) {
+        String isbn = txtISBN.getText().trim();
+        String titulo = txtTituloLibro.getText().trim();
+        Editorial editorialSeleccionada = lstEditorial.getSelectedValue();
+        Genero generoSeleccionado = lstGenero.getSelectedValue();
+        Autor autorSeleccionado = lstAutor.getSelectedValue();
+        String precioCostoStr = txtPrecioCosto.getText().trim();
+        String precioVentaStr = txtPrecioVenta.getText().trim();
+        String stockStr = txtStock.getText().trim();
+        String foto = lblFoto.getText().equals("Sin Foto") ? null : lblFoto.getText();
+
+        // Validar datos
+        if (isbn.isEmpty() || titulo.isEmpty() || editorialSeleccionada == null
+                || generoSeleccionado == null || autorSeleccionado == null
+                || precioCostoStr.isEmpty() || precioVentaStr.isEmpty() || stockStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+            return;
+        }
+
+        try {
+            double precioCosto = Double.parseDouble(precioCostoStr);
+            double precioVenta = Double.parseDouble(precioVentaStr);
+            int stock = Integer.parseInt(stockStr);
+
+            // Copiar foto si existe
+            if (foto != null) {
+                copiarFoto(foto, isbn);
+            }
+
+            // Guardar el libro en el sistema
+            if (!sistema.guardarLibro(isbn, titulo, editorialSeleccionada, generoSeleccionado,
+                    autorSeleccionado, precioCosto, precioVenta, stock, foto)) {
+                JOptionPane.showMessageDialog(this, "No se pudo guardar el libro. Verifique los datos.");
+                return;
+            }
+
+            // Limpiar formulario
+            txtISBN.setText("");
+            txtTituloLibro.setText("");
+            txtPrecioCosto.setText("");
+            txtPrecioVenta.setText("");
+            txtStock.setText("");
+            lblFoto.setText("Sin Foto");
+            lstEditorial.clearSelection();
+            lstGenero.clearSelection();
+            lstAutor.clearSelection();
+
+            JOptionPane.showMessageDialog(this, "Libro guardado con éxito.");
+
+            // Guardar datos en archivo
+            sistema.saveData("data/sistema.ser");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos en los campos de precio y stock.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar la foto: " + e.getMessage());
+        }
+    }
+
+    private void copiarFoto(String fotoPath, String isbn) throws IOException {
+        File archivoFuente = new File(fotoPath);
+
+        // Validar la extensión del archivo
+        String extension = getFileExtension(archivoFuente);
+
+        // Crear la carpeta "imagenes" si no existe
+        File destino = new File("imagenes");
+        if (!destino.exists() && !destino.mkdirs()) {
+            throw new IOException("No se pudo crear la carpeta 'imagenes'.");
+        }
+
+        // Crear el archivo destino con el nombre basado en el ISBN
+        File fotoDestino = new File(destino, isbn + "." + extension);
+
+        // Copiar el archivo
+        Files.copy(archivoFuente.toPath(), fotoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        // Actualizar la ruta en el JLabel (opcional, para verificar)
+        lblFoto.setText(fotoDestino.getAbsolutePath());
+    }
+
+    private String getFileExtension(File file) {
+        String nombreArchivo = file.getName();
+        int lastDotIndex = nombreArchivo.lastIndexOf(".");
+        if (lastDotIndex == -1 || lastDotIndex == nombreArchivo.length() - 1) {
+            return ""; // Sin extensión
+        }
+        return nombreArchivo.substring(lastDotIndex + 1).toLowerCase(); // Retorna la extensión en minúsculas
+    }
+
+    private void mostrarImagenEnLabel(String rutaImagen) {
+        ImageIcon icon = new ImageIcon(rutaImagen);
+        Image img = icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH);
+        lblFoto.setIcon(new ImageIcon(img));
+        lblFoto.setText(""); // Limpia el texto del JLabel
     }
 
     /**
@@ -55,9 +223,9 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         btnGuardarLibro = new javax.swing.JButton();
         btnVolverMenu = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        lstAutor = new javax.swing.JList<>();
-        jScrollPane4 = new javax.swing.JScrollPane();
         lstGenero = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        lstAutor = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ventana Registro Libro");
@@ -91,8 +259,8 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         });
         jPanelRegistroLibro.add(txtTituloLibro, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 78, 126, -1));
         jPanelRegistroLibro.add(txtISBN, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 119, 128, -1));
-        jPanelRegistroLibro.add(txtPrecioCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 160, -1, -1));
-        jPanelRegistroLibro.add(txtPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 201, -1, -1));
+        jPanelRegistroLibro.add(txtPrecioCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 160, 60, -1));
+        jPanelRegistroLibro.add(txtPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 201, 60, -1));
         jPanelRegistroLibro.add(txtStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 242, 124, -1));
 
         lblEditorial.setText("Editorial");
@@ -117,9 +285,15 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         jPanelRegistroLibro.add(btnCargarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 303, -1, -1));
 
         lblFoto.setText("Sin Foto");
-        jPanelRegistroLibro.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(235, 382, -1, -1));
+        lblFoto.setToolTipText("");
+        jPanelRegistroLibro.add(lblFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 299, 220, 270));
 
         btnGuardarLibro.setText("Guardar");
+        btnGuardarLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarLibroActionPerformed(evt);
+            }
+        });
         jPanelRegistroLibro.add(btnGuardarLibro, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 379, -1, -1));
 
         btnVolverMenu.setText("Volver");
@@ -130,13 +304,13 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         });
         jPanelRegistroLibro.add(btnVolverMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(526, 517, -1, -1));
 
-        lstAutor.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane3.setViewportView(lstAutor);
+        lstGenero.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane3.setViewportView(lstGenero);
 
         jPanelRegistroLibro.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(376, 93, 100, 172));
 
-        lstGenero.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane4.setViewportView(lstGenero);
+        lstAutor.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane4.setViewportView(lstAutor);
 
         jPanelRegistroLibro.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(526, 93, 100, 172));
 
@@ -169,6 +343,24 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
+            try {
+                // Validar que el archivo tenga una extensión de imagen válida
+                String fotoPath = selectedFile.getAbsolutePath();
+                String extension = getFileExtension(selectedFile);
+                if (!extension.matches("jpg|jpeg|png|gif|bmp")) {
+                    throw new IOException("El archivo seleccionado no es una imagen válida.");
+                }
+
+                // Mostrar la imagen en el JLabel
+                mostrarImagenEnLabel(fotoPath);
+
+                // Guardar temporalmente la ruta del archivo seleccionado
+                lblFoto.setText(fotoPath);
+
+                JOptionPane.showMessageDialog(this, "Foto cargada con éxito.");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar la foto: " + e.getMessage());
+            }
         }
     }//GEN-LAST:event_btnCargarFotoActionPerformed
 
@@ -177,6 +369,10 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
+
+    private void btnGuardarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarLibroActionPerformed
+        guardarLibro(evt);
+    }//GEN-LAST:event_btnGuardarLibroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,9 +428,9 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
     private javax.swing.JLabel lblPrecioVenta;
     private javax.swing.JLabel lblStock;
     private javax.swing.JLabel lblTituloLibro;
-    private javax.swing.JList<String> lstAutor;
-    private javax.swing.JList<String> lstEditorial;
-    private javax.swing.JList<String> lstGenero;
+    private javax.swing.JList<Autor> lstAutor;
+    private javax.swing.JList<Editorial> lstEditorial;
+    private javax.swing.JList<Genero> lstGenero;
     private javax.swing.JTextField txtISBN;
     private javax.swing.JTextField txtPrecioCosto;
     private javax.swing.JTextField txtPrecioVenta;
