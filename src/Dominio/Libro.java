@@ -1,14 +1,16 @@
-
 package Dominio;
 
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  *
  * @author pipetorrendell
  * @author nicholasdavies
  */
-public class Libro implements Serializable{
+public class Libro implements Serializable {
+
     // Atributos:
     private String isbn;
     private String titulo;
@@ -21,8 +23,8 @@ public class Libro implements Serializable{
     private String foto; // Path or filename for the book cover image
 
     // Constructor:
-    public Libro(String isbn, String titulo, Editorial editorial, Genero genero, Autor autor, 
-                 double precioCosto, double precioVenta, int stock, String foto) {
+    public Libro(String isbn, String titulo, Editorial editorial, Genero genero, Autor autor,
+            double precioCosto, double precioVenta, int stock, String foto) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.editorial = editorial;
@@ -66,7 +68,7 @@ public class Libro implements Serializable{
     public int getStock() {
         return stock;
     }
-    
+
     public String getFoto() {
         return foto;
     }
@@ -76,19 +78,26 @@ public class Libro implements Serializable{
         this.stock = stock;
     }
 
+    public void setFoto(String foto) {
+        if (foto != null && !foto.isEmpty() && Files.exists(Paths.get(foto))) {
+            this.foto = foto;
+        } else {
+            throw new IllegalArgumentException("La ruta de la foto no es válida o no existe: " + foto);
+        }
+    }
 
     //metodo para imprimir
     public String toString() {
-        return "Libro{" +
-                "isbn='" + isbn + '\'' +
-                ", titulo='" + titulo + '\'' +
-                ", editorial=" + editorial +
-                ", genero=" + genero +
-                ", autor=" + autor +
-                ", precioCosto=" + precioCosto +
-                ", precioVenta=" + precioVenta +
-                ", stock=" + stock +
-                ", foto='" + foto + '\'' +
-                '}';
+        return "Libro{"
+                + "isbn='" + isbn + '\''
+                + ", titulo='" + titulo + '\''
+                + ", editorial=" + editorial
+                + ", genero=" + genero
+                + ", autor=" + autor
+                + ", precioCosto=" + precioCosto
+                + ", precioVenta=" + precioVenta
+                + ", stock=" + stock
+                + ", foto='" + foto + '\''
+                + '}';
     }
 }

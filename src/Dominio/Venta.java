@@ -2,6 +2,7 @@ package Dominio;
 
 import java.io.Serializable;
 import java.util.Map;
+
 /**
  *
  * @author pipetorrendell
@@ -9,6 +10,7 @@ import java.util.Map;
  */
 
 public class Venta implements Serializable {
+
     private int numeroFactura;
     private String fecha;
     private String cliente;
@@ -17,6 +19,9 @@ public class Venta implements Serializable {
     public Venta(int numeroFactura, String fecha, String cliente, Map<Libro, Integer> librosVendidos) {
         if (librosVendidos == null || librosVendidos.isEmpty()) {
             throw new IllegalArgumentException("Debe haber al menos un libro en la venta.");
+        }
+        if (librosVendidos.entrySet().stream().anyMatch(entry -> entry.getKey().getStock() < entry.getValue())) {
+            throw new IllegalArgumentException("Error: No hay suficiente stock para uno o más libros en esta venta.");
         }
         this.numeroFactura = numeroFactura;
         this.fecha = fecha;
@@ -58,12 +63,12 @@ public class Venta implements Serializable {
     }
 
     public String toString() {
-        return "Venta{" +
-                "numeroFactura=" + numeroFactura +
-                ", fecha='" + fecha + '\'' +
-                ", cliente='" + cliente + '\'' +
-                ", librosVendidos=" + librosVendidos +
-                ", totalVenta=" + calcularTotal() +
-                '}';
+        return "Venta{"
+                + "numeroFactura=" + numeroFactura
+                + ", fecha='" + fecha + '\''
+                + ", cliente='" + cliente + '\''
+                + ", librosVendidos=" + librosVendidos
+                + ", totalVenta=" + calcularTotal()
+                + '}';
     }
 }
