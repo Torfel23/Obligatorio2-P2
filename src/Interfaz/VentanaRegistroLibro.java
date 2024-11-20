@@ -1,4 +1,3 @@
-
 package Interfaz;
 
 import Dominio.Autor;
@@ -135,7 +134,8 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
             txtPrecioCosto.setText("");
             txtPrecioVenta.setText("");
             txtStock.setText("");
-            lblFoto.setText("Sin Foto");
+            lblFoto.setText("Sin Foto"); 
+            lblFoto.setIcon(null);
             lstEditorial.clearSelection();
             lstGenero.clearSelection();
             lstAutor.clearSelection();

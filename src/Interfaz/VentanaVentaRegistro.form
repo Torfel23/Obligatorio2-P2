@@ -75,7 +75,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtTotal" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtTotal" min="-2" pref="72" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -179,6 +179,9 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNumeroFacturaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFechaVenta">
           <Properties>
@@ -272,6 +275,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Registrar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistrarVentaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnVolverMenu">
           <Properties>

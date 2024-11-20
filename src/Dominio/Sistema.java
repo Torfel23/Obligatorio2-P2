@@ -121,6 +121,10 @@ public class Sistema implements Serializable {
         return new ArrayList<>(libros);
     }
 
+    public List<Venta> getVentas() {
+        return ventas;
+    }
+
     public Libro buscarLibroPorIsbn(String isbn) {
         return libros.stream()
                 .filter(libro -> libro.getIsbn().equalsIgnoreCase(isbn))
@@ -210,14 +214,32 @@ public class Sistema implements Serializable {
         return true;
     }
 
-    public void registrarVenta(Venta venta) {
-        if (venta != null && verificarStockVenta(venta.getLibrosVendidos())) {
-            ventas.add(venta);
-            venta.actualizarStock();
-            System.out.println("Venta registrada exitosamente: " + venta.getNumeroFactura());
-        } else {
-            System.out.println("No se pudo registrar la venta debido a stock insuficiente.");
+    public boolean registrarVenta(Venta venta) {
+        if (venta == null) {
+            return false;
         }
+
+        if (venta.getFecha() == null || venta.getFecha().isEmpty()) {
+            System.out.println("La fecha no puede estar vacía.");
+            return false;
+        }
+
+        if (!verificarStockVenta(venta.getLibrosVendidos())) {
+            System.out.println("Stock insuficiente. No se puede registrar la venta.");
+            return false;
+        }
+
+        ventas.add(venta);
+        venta.actualizarStock();
+        System.out.println("Venta registrada exitosamente: " + venta.getNumeroFactura());
+        return true;
+    }
+
+    public Venta buscarVentaPorNumero(int numeroFactura) {
+        return ventas.stream()
+                .filter(v -> v.getNumeroFactura() == numeroFactura)
+                .findFirst()
+                .orElse(null);
     }
 
 }
