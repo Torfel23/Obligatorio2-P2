@@ -132,6 +132,25 @@ public class Sistema implements Serializable {
                 .orElse(null);
     }
 
+    public List<Libro> filtrarLibros(String autor, String genero, String titulo) {
+        List<Libro> filtrados = new ArrayList<Libro>();
+        autor = autor.toLowerCase();
+        genero = genero.toLowerCase();
+        titulo = titulo.toLowerCase();
+        for (int i = 0; i < libros.size(); i++) {
+            Libro libro = libros.get(i);
+            boolean autorMatches = (!autor.isEmpty() && libro.getAutor().getNombre().toLowerCase().contains(autor)) || autor.isEmpty();
+            boolean generoMatches = (!genero.isEmpty() && libro.getGenero().getNombre().toLowerCase().contains(genero)) || genero.isEmpty();
+            boolean tituloMatches = (!titulo.isEmpty() && libro.getTitulo().toLowerCase().contains(titulo)) || titulo.isEmpty();
+            
+            if (autorMatches && generoMatches && tituloMatches){
+                filtrados.add(libro);
+            }
+            
+        }
+        return filtrados;
+    }
+
     public List<Venta> getVentasPorIsbn(String isbn) {
         return ventas.stream().filter(venta -> venta.getLibro(isbn) != null).toList();
     }
