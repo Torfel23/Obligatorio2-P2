@@ -1,7 +1,17 @@
-
 package Interfaz;
 
+import Dominio.Libro;
 import Dominio.Sistema;
+import Dominio.Venta;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -72,15 +82,22 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         btnMostrarListaLibros.setText("...");
 
         btnConsultarVenta.setText("Consultar");
+        btnConsultarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarVentaActionPerformed(evt);
+            }
+        });
 
         btnExportarVenta.setText("Exportar");
+        btnExportarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarVentaActionPerformed(evt);
+            }
+        });
 
         tblConsultaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Fecha", "Cliente", "Factura", "Cantidad", "Precio", "Importe"
@@ -114,43 +131,50 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         jPanelConsultaVentaLayout.setHorizontalGroup(
             jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEjemplaresVendidos)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addComponent(txtEjemplaresVendidos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)))
+                .addGap(68, 68, 68)
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(lblEjemplaresVendidos)
-                        .addGap(68, 68, 68)
                         .addComponent(lblTotalRecaudado)
-                        .addGap(56, 56, 56)
-                        .addComponent(lblTotalGanancia))
+                        .addGap(83, 83, 83))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(71, 71, 71)))
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTotalGanancia)
+                    .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(270, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
                         .addGap(48, 48, 48)
-                        .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtTitulo, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConsultaVentaLayout.createSequentialGroup()
                                     .addGap(186, 186, 186)
                                     .addComponent(jblTituloConsultaVentas)))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
                                 .addComponent(lblISBN)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnMostrarListaLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(93, 93, 93)
-                                .addComponent(btnConsultarVenta)
-                                .addGap(75, 75, 75)
-                                .addComponent(btnExportarVenta)))))
-                .addContainerGap(67, Short.MAX_VALUE))
-            .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(txtEjemplaresVendidos, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117)
-                .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96)
-                .addComponent(btnVolverMenu)
+                                .addGap(114, 114, 114)
+                                .addComponent(btnConsultarVenta)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExportarVenta))
+                    .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVolverMenu)))
                 .addGap(39, 39, 39))
         );
         jPanelConsultaVentaLayout.setVerticalGroup(
@@ -171,22 +195,22 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTotalRecaudado, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblEjemplaresVendidos)
-                        .addComponent(lblTotalGanancia)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblTotalRecaudado)
+                        .addComponent(lblTotalGanancia))
+                    .addComponent(lblEjemplaresVendidos))
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addComponent(btnVolverMenu)
+                        .addGap(32, 32, 32))
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEjemplaresVendidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addComponent(btnVolverMenu)
-                        .addGap(32, 32, 32))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,12 +232,75 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-         
+
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
         VentanaMenu menu = new VentanaMenu(sistema);
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
+
+    private void btnConsultarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarVentaActionPerformed
+        String ISBN = txtISBN.getText().trim();
+        Libro libro = sistema.buscarLibroPorIsbn(ISBN);
+        if (libro == null) {
+            JOptionPane.showMessageDialog(this, "No existe un libro con ese ISBN");
+            txtISBN.setText("");
+            return;
+        }
+        List<Venta> VentaFiltrada = sistema.getVentasPorIsbn(ISBN);
+
+        txtTitulo.setText(libro.getTitulo());
+        DefaultTableModel model = (DefaultTableModel) tblConsultaVentas.getModel();
+        model.setRowCount(0);
+        int ejemplaresVendidos = 0;
+        double totalRecaudado = 0;
+        for (int i = 0; i < VentaFiltrada.size(); ++i) {
+            Venta venta = VentaFiltrada.get(i);
+            double total = (libro.getPrecioVenta() * venta.getCantidad(libro));
+            model.addRow(new Object[]{venta.getFecha(), venta.getCliente(), venta.getNumeroFactura(), venta.getCantidad(libro), libro.getPrecioVenta(), total});
+
+            ejemplaresVendidos += venta.getCantidad(libro);
+            totalRecaudado += total;
+        }
+        double totalGanancia = totalRecaudado - (ejemplaresVendidos * libro.getPrecioCosto());
+
+        txtEjemplaresVendidos.setText(String.valueOf(ejemplaresVendidos));
+        txtTotalRecaudado.setText(String.valueOf(totalRecaudado));
+        txtTotalGanancia.setText(String.valueOf(totalGanancia));
+
+        txtISBN.setText("");
+    }//GEN-LAST:event_btnConsultarVentaActionPerformed
+
+    private void btnExportarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarVentaActionPerformed
+
+        File file = new File("ventas.csv");
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter(file);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Error al abrir ventas.csv");
+            return;
+        }
+        BufferedWriter writer = new BufferedWriter(fileWriter);
+        try {
+            writer.write("Fecha;Cliente;Factura;Cantidad;Precio;Importe");
+            DefaultTableModel model = (DefaultTableModel) tblConsultaVentas.getModel();
+            for (int i = 0; i < model.getRowCount(); ++i) {
+                String fecha = (String) model.getValueAt(i, 0);
+                String cliente = (String) model.getValueAt(i, 1);
+                String factura = (String) model.getValueAt(i, 2).toString();
+                String cantidad = (String) model.getValueAt(i, 3).toString();
+                String precio = (String) model.getValueAt(i, 4).toString();
+                String importe = (String) model.getValueAt(i, 5).toString();
+
+                writer.write(fecha + ";" + cliente + ";" + factura + ";" + cantidad + ";" + precio + ";" + importe + "\n");
+                
+            }
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaConsultaVentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExportarVentaActionPerformed
 
     /**
      * @param args the command line arguments

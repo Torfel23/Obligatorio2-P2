@@ -44,6 +44,10 @@ public class Venta implements Serializable {
     public Map<Libro, Integer> getLibrosVendidos() {
         return librosVendidos;
     }
+    
+    public int getCantidad(Libro libro){
+        return librosVendidos.get(libro);
+    }
 
     public Libro getLibro(String isbn) {
         return librosVendidos.keySet().stream()
