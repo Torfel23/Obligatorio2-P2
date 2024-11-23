@@ -208,7 +208,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+         
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
         VentanaMenu menu = new VentanaMenu(sistema);
         menu.setVisible(true);

@@ -4,7 +4,11 @@ import Dominio.Libro;
 import Dominio.Sistema;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -23,6 +27,7 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
         this.sistema = sistema;
 
         initComponents();
+
     }
 
     /**
@@ -164,6 +169,8 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverMenuActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        grid.removeAll();
+
         String autor = txtAutor.getText().trim();
         String genero = txtGener.getText().trim();
         String titulo = txtTitulo.getText().trim();
@@ -173,16 +180,28 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
             return;
         }
         List<Libro> filtrados = sistema.filtrarLibros(autor, genero, titulo);
-        
+
         grid.setVisible(true);
-        
+
         for (int i = 0; i < filtrados.size(); ++i) {
             Libro libro = filtrados.get(i);
-            System.out.println(libro.getTitulo());
-            JButton button = new JButton(libro.getIsbn());
+            JButton button = new JButton();
+            String path = libro.getFoto();
+            System.out.println(path);
+            if (path.isEmpty() || !(new File(path).exists())) {
+                button.setText(libro.getIsbn());
+            } else {
+                button.setIcon(new ImageIcon(path));
+                button.setText(libro.getIsbn());
+            }
             button.addActionListener(new LibroListener());
             grid.add(button);
         }
+        grid.revalidate();
+        grid.repaint();
+        txtAutor.setText("");
+        txtGener.setText("");
+        txtTitulo.setText("");
 
 
     }//GEN-LAST:event_btnConsultarActionPerformed
@@ -191,8 +210,12 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
 
         public void actionPerformed(ActionEvent e) {
             // este código se ejecutará al presionar el botón, obtengo cuál botón
+            
             JButton cual = ((JButton) e.getSource());
             // código a completar según el botón presionado
+            String ISBN = cual.getText();
+            Libro libro = sistema.buscarLibroPorIsbn(ISBN);
+            JOptionPane.showMessageDialog(rootPane, "ISBN = " + ISBN + "\nTitulo = " + libro.getTitulo() + "\nAutor = " + libro.getAutor().getNombre() + "\nGenero = " + libro.getGenero().getNombre());
         }
     }
 

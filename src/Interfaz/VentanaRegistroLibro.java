@@ -118,7 +118,7 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
 
             // Copiar foto si existe
             if (foto != null) {
-                copiarFoto(foto, isbn);
+                foto = copiarFoto(foto, isbn);
             }
 
             // Guardar el libro en el sistema
@@ -134,7 +134,7 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
             txtPrecioCosto.setText("");
             txtPrecioVenta.setText("");
             txtStock.setText("");
-            lblFoto.setText("Sin Foto"); 
+            lblFoto.setText("Sin Foto");
             lblFoto.setIcon(null);
             lstEditorial.clearSelection();
             lstGenero.clearSelection();
@@ -151,7 +151,7 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
         }
     }
 
-    private void copiarFoto(String fotoPath, String isbn) throws IOException {
+    private String copiarFoto(String fotoPath, String isbn) throws IOException {
         File archivoFuente = new File(fotoPath);
 
         // Validar la extensión del archivo
@@ -171,6 +171,8 @@ public class VentanaRegistroLibro extends javax.swing.JFrame {
 
         // Actualizar la ruta en el JLabel (opcional, para verificar)
         lblFoto.setText(fotoDestino.getAbsolutePath());
+
+        return fotoDestino.toString();
     }
 
     private String getFileExtension(File file) {
