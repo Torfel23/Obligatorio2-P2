@@ -40,7 +40,7 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
         List<Libro> librosOrdenados = new ArrayList<>(sistema.getLibros());
         librosOrdenados.sort(Comparator.comparing(Libro::getTitulo)); // Ordenar por título
         for (Libro libro : librosOrdenados) {
-            modeloLibros.addElement(libro.getIsbn() + " - " + libro.getTitulo());
+            modeloLibros.addElement(libro.getIsbn() + " - " + libro.getTitulo() + " (Stock: " + libro.getStock() + ")");
         }
 
         lstLibros.setModel(modeloLibros);
@@ -50,10 +50,9 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
         modeloVenta.clear();
         double total = 0.0;
 
-        // Recorre los libros seleccionados y actualiza la lista y el total
-        for (Map.Entry<Libro, Integer> mom : librosSeleccionados.entrySet()) {
-            Libro libro = mom.getKey();
-            int cantidad = mom.getValue();
+        for (Map.Entry<Libro, Integer> entry : librosSeleccionados.entrySet()) {
+            Libro libro = entry.getKey();
+            int cantidad = entry.getValue();
             double subtotal = libro.getPrecioVenta() * cantidad;
             total += subtotal;
 
@@ -64,7 +63,7 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
     }
 
     private void inicializarNumeroFactura() {
-        int numeroFactura = sistema.getUltimoNumeroFactura() + 1; 
+        int numeroFactura = sistema.getUltimoNumeroFactura() + 1;
         txtNumeroFactura.setText(String.valueOf(numeroFactura));
     }
 
@@ -288,7 +287,6 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
         int index = lstLibros.getSelectedIndex();
         if (index >= 0) {
-            // Obtener libro seleccionado
             String libroInfo = modeloLibros.get(index);
             String isbn = libroInfo.split(" - ")[0]; // Extraer ISBN
             Libro libro = sistema.buscarLibroPorIsbn(isbn);
@@ -298,8 +296,6 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "No hay stock disponible para este libro.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                // Agregar o incrementar la cantidad en el mapa temporal
                 librosSeleccionados.put(libro, librosSeleccionados.getOrDefault(libro, 0) + 1);
                 actualizarListaVenta();
             }
@@ -309,17 +305,15 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
     private void btnQuitarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarLibroActionPerformed
         int index = lstVenta.getSelectedIndex();
         if (index >= 0) {
-            // Obtener libro seleccionado de la lista de venta
             String ventaInfo = modeloVenta.get(index);
             String titulo = ventaInfo.split(" - ")[0];
 
-            // Buscar el libro en el mapa temporal y reducir cantidad
-            for (Map.Entry<Libro, Integer> mom : librosSeleccionados.entrySet()) {
-                if (mom.getKey().getTitulo().equals(titulo)) {
-                    if (mom.getValue() > 1) {
-                        librosSeleccionados.put(mom.getKey(), mom.getValue() - 1);
+            for (Map.Entry<Libro, Integer> entry : librosSeleccionados.entrySet()) {
+                if (entry.getKey().getTitulo().equals(titulo)) {
+                    if (entry.getValue() > 1) {
+                        librosSeleccionados.put(entry.getKey(), entry.getValue() - 1);
                     } else {
-                        librosSeleccionados.remove(mom.getKey());
+                        librosSeleccionados.remove(entry.getKey());
                     }
                     break;
                 }
@@ -342,42 +336,61 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
 
         String fecha = txtFechaVenta.getText();
         String cliente = txtClienteVenta.getText();
-        int numeroFactura = sistema.generarNumeroFactura();
 
+        if (fecha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Campo de fecha vacio", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Map<Libro, Integer> librosConStock = new HashMap<>();
         List<String> mensajesStock = new ArrayList<>();
 
-        // Verificar el stock de cada libro seleccionado
-        for (Map.Entry<Libro, Integer> mom : librosSeleccionados.entrySet()) {
-            Libro libro = mom.getKey();
-            int cantidadSeleccionada = mom.getValue();
+        for (Map.Entry<Libro, Integer> entry : librosSeleccionados.entrySet()) {
+            Libro libro = entry.getKey();
+            int cantidadSeleccionada = entry.getValue();
             int stockDisponible = libro.getStock();
 
             if (stockDisponible >= cantidadSeleccionada) {
                 librosConStock.put(libro, cantidadSeleccionada);
+            } else if (stockDisponible > 0) {
+                librosConStock.put(libro, stockDisponible);
+                mensajesStock.add("El libro \"" + libro.getTitulo() + "\" solo tiene " + stockDisponible + " unidades disponibles.");
             } else {
-                mensajesStock.add("Stock insuficiente para \"" + libro.getTitulo() + "\". No se puede vender.");
+                mensajesStock.add("El libro \"" + libro.getTitulo() + "\" no tiene stock disponible.");
+                continue; // Salta al siguiente libro
             }
+        }
+
+        if (librosConStock.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay stock suficiente para realizar la venta.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         if (!mensajesStock.isEmpty()) {
             String mensaje = String.join("\n", mensajesStock);
-            JOptionPane.showMessageDialog(this, mensaje, "Error de stock", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, mensaje, "Stock ajustado", JOptionPane.WARNING_MESSAGE);
+        }
+
+        // Generar el número de factura solo si hay libros válidos para la venta
+        int numeroFactura = sistema.generarNumeroFactura();
+        Venta nuevaVenta = new Venta(numeroFactura, fecha, cliente, librosConStock);
+
+        // Registrar la venta en el sistema
+        if (!sistema.registrarVenta(nuevaVenta)) {
+            JOptionPane.showMessageDialog(this, "No se pudo registrar la venta debido a un error interno.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Crear y registrar la nueva venta
-        Venta nuevaVenta = new Venta(numeroFactura, fecha, cliente, librosConStock);
-        sistema.registrarVenta(nuevaVenta);
-
         JOptionPane.showMessageDialog(this, "Venta registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
+        // Limpiar selección y campos
         librosSeleccionados.clear();
         actualizarListaVenta();
         txtFechaVenta.setText("");
         txtClienteVenta.setText("");
 
+        // Actualizar lista de libros y número de factura
         inicializarNumeroFactura();
+        inicializarListaLibros();
     }//GEN-LAST:event_btnRegistrarVentaActionPerformed
 
     private void txtNumeroFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroFacturaActionPerformed

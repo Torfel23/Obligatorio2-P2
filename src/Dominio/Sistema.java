@@ -235,28 +235,10 @@ public class Sistema implements Serializable {
     }
 
     public boolean registrarVenta(Venta venta) {
-        if (venta == null) {
-            return false;
-        }
-
-        if (venta.getFecha() == null || venta.getFecha().isEmpty()) {
-            System.out.println("La fecha no puede estar vacía.");
-            return false;
-        }
-
-        // Validar stock antes de registrar la venta
-        if (!verificarStockVenta(venta.getLibrosVendidos())) {
-            System.out.println("Stock insuficiente. No se puede registrar la venta.");
-            return false;
-        }
-
-        // Registrar la venta y actualizar stock
         ventas.add(venta);
-        venta.actualizarStock();
-        ultimoNumeroFactura = venta.getNumeroFactura(); // Actualizar el contador global
-        saveData("data/sistema.ser"); // Guardar los datos en persistencia
-
-        System.out.println("Venta registrada exitosamente: " + venta.getNumeroFactura());
+        venta.actualizarStock(); 
+        ultimoNumeroFactura = venta.getNumeroFactura(); 
+        saveData("data/sistema.ser"); 
         return true;
     }
 
