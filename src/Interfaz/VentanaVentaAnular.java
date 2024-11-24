@@ -1,7 +1,9 @@
-
 package Interfaz;
 
 import Dominio.Sistema;
+import Dominio.Venta;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,6 +19,18 @@ public class VentanaVentaAnular extends javax.swing.JFrame {
     public VentanaVentaAnular(Sistema sistema) {
         this.sistema = sistema;
         initComponents();
+        
+        tblVentaAnular.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Título del Libro", "Cantidad", "Precio Unitario", "Total"}
+        ) {
+            boolean[] canEdit = new boolean[]{false, false, false, false};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        });
     }
 
     /**
@@ -46,9 +60,20 @@ public class VentanaVentaAnular extends javax.swing.JFrame {
         jblTituloVentaAnular.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jblTituloVentaAnular.setText("Anulacion de Venta");
 
+        txtNumeroFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumeroFacturaActionPerformed(evt);
+            }
+        });
+
         lblNumeroFactura.setText("Factura");
 
         btnBuscarFactura.setText("Buscar");
+        btnBuscarFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarFacturaActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setToolTipText("");
 
@@ -68,6 +93,11 @@ public class VentanaVentaAnular extends javax.swing.JFrame {
         lblTotalVenta.setText("Total Venta");
 
         btnAnularVenta.setText("Anular Venta");
+        btnAnularVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnularVentaActionPerformed(evt);
+            }
+        });
 
         btnVolverMenu.setText("Volver");
         btnVolverMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +129,7 @@ public class VentanaVentaAnular extends javax.swing.JFrame {
                             .addGroup(jPanelVentaAnularLayout.createSequentialGroup()
                                 .addComponent(lblTotalVenta)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtTotalVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTotalVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAnularVenta)
                                 .addGap(64, 64, 64)))))
@@ -156,6 +186,68 @@ public class VentanaVentaAnular extends javax.swing.JFrame {
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
+
+    private void btnBuscarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarFacturaActionPerformed
+        try {
+            int numeroFactura = Integer.parseInt(txtNumeroFactura.getText().trim());
+            Venta venta = sistema.buscarVentaPorNumero(numeroFactura);
+
+            if (venta == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró una venta con ese número de factura.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Mostrar datos en la tabla
+            DefaultTableModel model = (DefaultTableModel) tblVentaAnular.getModel();
+            model.setRowCount(0); // Limpiar la tabla
+
+            venta.getLibrosVendidos().forEach((libro, cantidad) -> {
+                double precioUnitario = libro.getPrecioVenta();
+                double total = precioUnitario * cantidad;
+                model.addRow(new Object[]{libro.getTitulo(), cantidad, precioUnitario, total});
+            });
+
+            // Mostrar el total de la venta
+            txtTotalVenta.setText(String.format("%.2f", venta.calcularTotal()));
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número de factura válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnBuscarFacturaActionPerformed
+
+    private void txtNumeroFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroFacturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNumeroFacturaActionPerformed
+
+    private void btnAnularVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularVentaActionPerformed
+        try {
+            int numeroFactura = Integer.parseInt(txtNumeroFactura.getText().trim());
+
+            // Confirmar la anulación
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea anular esta venta?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            // Anular la venta
+            if (sistema.anularVenta(numeroFactura)) {
+                JOptionPane.showMessageDialog(this, "La venta fue anulada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                // Limpiar la tabla y campos
+                DefaultTableModel model = (DefaultTableModel) tblVentaAnular.getModel();
+                model.setRowCount(0);
+                txtNumeroFactura.setText("");
+                txtTotalVenta.setText("");
+
+                // Guardar cambios en el sistema
+                sistema.saveData("data/sistema.ser");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo anular la venta. Verifique el número de factura.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número de factura válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAnularVentaActionPerformed
 
     /**
      * @param args the command line arguments

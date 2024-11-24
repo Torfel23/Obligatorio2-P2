@@ -12,6 +12,7 @@ import java.util.*;
 public class Sistema implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private int ultimoNumeroFactura = 0;
 
     private List<Editorial> editoriales;
     private List<Genero> generos;
@@ -142,11 +143,11 @@ public class Sistema implements Serializable {
             boolean autorMatches = (!autor.isEmpty() && libro.getAutor().getNombre().toLowerCase().contains(autor)) || autor.isEmpty();
             boolean generoMatches = (!genero.isEmpty() && libro.getGenero().getNombre().toLowerCase().contains(genero)) || genero.isEmpty();
             boolean tituloMatches = (!titulo.isEmpty() && libro.getTitulo().toLowerCase().contains(titulo)) || titulo.isEmpty();
-            
-            if (autorMatches && generoMatches && tituloMatches){
+
+            if (autorMatches && generoMatches && tituloMatches) {
                 filtrados.add(libro);
             }
-            
+
         }
         return filtrados;
     }
@@ -243,15 +244,32 @@ public class Sistema implements Serializable {
             return false;
         }
 
+        // Validar stock antes de registrar la venta
         if (!verificarStockVenta(venta.getLibrosVendidos())) {
             System.out.println("Stock insuficiente. No se puede registrar la venta.");
             return false;
         }
 
+        // Registrar la venta y actualizar stock
         ventas.add(venta);
         venta.actualizarStock();
+        ultimoNumeroFactura = venta.getNumeroFactura(); // Actualizar el contador global
+        saveData("data/sistema.ser"); // Guardar los datos en persistencia
+
         System.out.println("Venta registrada exitosamente: " + venta.getNumeroFactura());
         return true;
+    }
+
+    public int getUltimoNumeroFactura() {
+        return ultimoNumeroFactura;
+    }
+
+    public void setUltimoNumeroFactura(int ultimoNumeroFactura) {
+        this.ultimoNumeroFactura = ultimoNumeroFactura;
+    }
+
+    public int generarNumeroFactura() {
+        return ++ultimoNumeroFactura;
     }
 
     public Venta buscarVentaPorNumero(int numeroFactura) {
@@ -259,6 +277,21 @@ public class Sistema implements Serializable {
                 .filter(v -> v.getNumeroFactura() == numeroFactura)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public boolean anularVenta(int numeroFactura) {
+        Venta venta = buscarVentaPorNumero(numeroFactura);
+
+        if (venta == null) {
+            return false;
+        }
+
+        venta.getLibrosVendidos().forEach((libro, cantidad) -> {
+            libro.setStock(libro.getStock() + cantidad);
+        });
+
+        ventas.remove(venta);
+        return true;
     }
 
 }
