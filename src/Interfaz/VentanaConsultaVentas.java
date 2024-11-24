@@ -124,6 +124,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblConsultaVentas.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tblConsultaVentas);
 
         txtTitulo.setEditable(false);
@@ -281,7 +282,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         String ISBN = txtISBN.getText().trim();
         Libro libro = sistema.buscarLibroPorIsbn(ISBN);
         if (libro == null) {
-            JOptionPane.showMessageDialog(this, "No existe un libro con ese ISBN");
+            JOptionPane.showMessageDialog(this, "No existe un libro con ese ISBN o esta vacio");
             txtISBN.setText("");
             return;
         }
@@ -340,8 +341,8 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 String importe = (String) model.getValueAt(i, 5).toString();
 
                 writer.write(fecha + ";" + cliente + ";" + factura + ";" + cantidad + ";" + precio + ";" + importe + "\n");
-                JOptionPane.showMessageDialog(rootPane, "Datos Exportados Correctamente!");
             }
+            JOptionPane.showMessageDialog(rootPane, "Datos Exportados Correctamente!");
             writer.close();
         } catch (IOException ex) {
             Logger.getLogger(VentanaConsultaVentas.class.getName()).log(Level.SEVERE, null, ex);
@@ -351,28 +352,45 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
     private void btnMostrarListaLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarListaLibrosActionPerformed
         if (isListVisible) {
-            // Hide the list
-            lstLibro.setVisible(false);
-            btnMostrarListaLibros.setText("Mostrar Lista Libros");
-        } else {
-            // Show the list and populate it
-            DefaultListModel<Libro> modeloLibro = new DefaultListModel<>();
-            sistema.getLibros().forEach(modeloLibro::addElement);
-            lstLibro.setModel(modeloLibro);
-            lstLibro.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-                JLabel label = new JLabel(value.getIsbn() + " - " + value.getTitulo());
-                if (isSelected) {
-                    label.setBackground(list.getSelectionBackground());
-                    label.setForeground(list.getSelectionForeground());
-                    label.setOpaque(true);
-                }
-                return label;
-            });
+        // Hide the list
+        lstLibro.setVisible(false);
+        btnMostrarListaLibros.setText("Mostrar Lista Libros");
+    } else {
+        // Show the list and populate it
+        DefaultListModel<Libro> modeloLibro = new DefaultListModel<>();
+        sistema.getLibros().forEach(modeloLibro::addElement);
+        lstLibro.setModel(modeloLibro);
+        lstLibro.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JLabel label = new JLabel(value.getIsbn() + " - " + value.getTitulo());
+            if (isSelected) {
+                label.setBackground(list.getSelectionBackground());
+                label.setForeground(list.getSelectionForeground());
+                label.setOpaque(true);
+            }
+            return label;
+        });
 
-            lstLibro.setVisible(true);
-            btnMostrarListaLibros.setText("Ocultar Lista Libros");
-        }
-        isListVisible = !isListVisible; // Toggle the flag
+        // Add a MouseListener to handle item selection
+        lstLibro.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 1) { // Single-click event
+                    int index = lstLibro.locationToIndex(evt.getPoint());
+                    if (index >= 0) {
+                        Libro selectedLibro = lstLibro.getModel().getElementAt(index);
+                        txtISBN.setText(selectedLibro.getIsbn()); // Pass the ISBN to txtISBN
+                        lstLibro.setVisible(false); // Hide the list
+                        btnMostrarListaLibros.setText("Mostrar Lista Libros");
+                        isListVisible = false; // Update the visibility flag
+                    }
+                }
+            }
+        });
+
+        lstLibro.setVisible(true);
+        btnMostrarListaLibros.setText("Ocultar Lista Libros");
+    }
+    isListVisible = !isListVisible; // Toggle the flag
     }//GEN-LAST:event_btnMostrarListaLibrosActionPerformed
 
     /**
