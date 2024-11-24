@@ -330,7 +330,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         }
         
         try {
-            writer.write("Fecha;Cliente;Factura;Cantidad;Precio;Importe");
+            writer.write("Fecha;Cliente;Factura;Cantidad;Precio;Importe\n");
 
             for (int i = 0; i < model.getRowCount(); ++i) {
                 String fecha = (String) model.getValueAt(i, 0);
@@ -339,11 +339,14 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 String cantidad = (String) model.getValueAt(i, 3).toString();
                 String precio = (String) model.getValueAt(i, 4).toString();
                 String importe = (String) model.getValueAt(i, 5).toString();
-
+                
+                System.out.println(i);
                 writer.write(fecha + ";" + cliente + ";" + factura + ";" + cantidad + ";" + precio + ";" + importe + "\n");
             }
             JOptionPane.showMessageDialog(rootPane, "Datos Exportados Correctamente!");
             writer.close();
+            fileWriter.close();
+          
         } catch (IOException ex) {
             Logger.getLogger(VentanaConsultaVentas.class.getName()).log(Level.SEVERE, null, ex);
         }
