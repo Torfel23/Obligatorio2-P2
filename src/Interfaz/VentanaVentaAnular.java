@@ -88,7 +88,16 @@ public class VentanaVentaAnular extends javax.swing.JFrame {
             new String [] {
                 "Título del Libro", "Cantidad", "Precio Unitario", "Total"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblVentaAnular.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblVentaAnular);
 
         lblTotalVenta.setText("Total Venta");

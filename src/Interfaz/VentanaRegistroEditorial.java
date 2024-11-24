@@ -110,13 +110,14 @@ public class VentanaRegistroEditorial extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tblTablaEditoriales.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblTablaEditoriales);
 
         btnVolver.setText("Volver");
