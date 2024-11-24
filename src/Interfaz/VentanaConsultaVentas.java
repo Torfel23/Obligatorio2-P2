@@ -33,8 +33,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         initComponents();
         initializeSelectionListener();
         lstLibro.setVisible(false);
-        
-        
+
     }
 
     /**
@@ -260,18 +259,18 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void initializeSelectionListener() {
-    lstLibro.addListSelectionListener(event -> {
-        if (!event.getValueIsAdjusting()) { // Avoid multiple events for a single click
-            Libro selectedLibro = lstLibro.getSelectedValue(); // Get selected item
-            if (selectedLibro != null) {
-                txtISBN.setText(selectedLibro.getIsbn()); // Set ISBN to txtISBN
+        lstLibro.addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) { // Avoid multiple events for a single click
+                Libro selectedLibro = lstLibro.getSelectedValue(); // Get selected item
+                if (selectedLibro != null) {
+                    txtISBN.setText(selectedLibro.getIsbn()); // Set ISBN to txtISBN
+                }
             }
-        }
-    });
-}
-    
+        });
+    }
+
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
         VentanaMenu menu = new VentanaMenu(sistema);
         menu.setVisible(true);
@@ -321,9 +320,17 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             return;
         }
         BufferedWriter writer = new BufferedWriter(fileWriter);
+
+        DefaultTableModel model = (DefaultTableModel) tblConsultaVentas.getModel();
+
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(rootPane, "No hay datos para exportar.");
+            return;
+        }
+        
         try {
             writer.write("Fecha;Cliente;Factura;Cantidad;Precio;Importe");
-            DefaultTableModel model = (DefaultTableModel) tblConsultaVentas.getModel();
+
             for (int i = 0; i < model.getRowCount(); ++i) {
                 String fecha = (String) model.getValueAt(i, 0);
                 String cliente = (String) model.getValueAt(i, 1);
@@ -341,39 +348,36 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnExportarVentaActionPerformed
     private boolean isListVisible = false;
-    
+
     private void btnMostrarListaLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarListaLibrosActionPerformed
         if (isListVisible) {
-        // Hide the list
-        lstLibro.setVisible(false);
-        btnMostrarListaLibros.setText("Mostrar Lista Libros");
-    } else {
-        // Show the list and populate it
-        DefaultListModel<Libro> modeloLibro = new DefaultListModel<>();
-        sistema.getLibros().forEach(modeloLibro::addElement);
-        lstLibro.setModel(modeloLibro);
-        lstLibro.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-            JLabel label = new JLabel(value.getIsbn() + " - " + value.getTitulo());
-            if (isSelected) {
-                label.setBackground(list.getSelectionBackground());
-                label.setForeground(list.getSelectionForeground());
-                label.setOpaque(true);
-            }
-            return label;
-        });
+            // Hide the list
+            lstLibro.setVisible(false);
+            btnMostrarListaLibros.setText("Mostrar Lista Libros");
+        } else {
+            // Show the list and populate it
+            DefaultListModel<Libro> modeloLibro = new DefaultListModel<>();
+            sistema.getLibros().forEach(modeloLibro::addElement);
+            lstLibro.setModel(modeloLibro);
+            lstLibro.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+                JLabel label = new JLabel(value.getIsbn() + " - " + value.getTitulo());
+                if (isSelected) {
+                    label.setBackground(list.getSelectionBackground());
+                    label.setForeground(list.getSelectionForeground());
+                    label.setOpaque(true);
+                }
+                return label;
+            });
 
-        lstLibro.setVisible(true);
-        btnMostrarListaLibros.setText("Ocultar Lista Libros");
-    }
-    isListVisible = !isListVisible; // Toggle the flag
+            lstLibro.setVisible(true);
+            btnMostrarListaLibros.setText("Ocultar Lista Libros");
+        }
+        isListVisible = !isListVisible; // Toggle the flag
     }//GEN-LAST:event_btnMostrarListaLibrosActionPerformed
-    
-    
+
     /**
      * @param args the command line arguments
      */
-    
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
