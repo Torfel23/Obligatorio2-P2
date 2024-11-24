@@ -85,7 +85,7 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
             }
         });
 
-        grid.setLayout(new java.awt.GridLayout());
+        grid.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,7 +117,7 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(244, 244, 244)
                         .addComponent(jblTituloConsultaLibro)))
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnVolverMenu)

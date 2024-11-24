@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Dominio.Editorial;
 import Dominio.Libro;
 import Dominio.Sistema;
 import Dominio.Venta;
@@ -10,12 +11,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class VentanaConsultaVentas extends javax.swing.JFrame {
 
@@ -57,6 +61,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         txtTotalRecaudado = new javax.swing.JTextField();
         txtTotalGanancia = new javax.swing.JTextField();
         btnVolverMenu = new javax.swing.JButton();
+        lstLibro = new javax.swing.JList<>();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -80,6 +85,11 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         lblISBN.setText("ISBN");
 
         btnMostrarListaLibros.setText("...");
+        btnMostrarListaLibros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarListaLibrosActionPerformed(evt);
+            }
+        });
 
         btnConsultarVenta.setText("Consultar");
         btnConsultarVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -102,7 +112,15 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             new String [] {
                 "Fecha", "Cliente", "Factura", "Cantidad", "Precio", "Importe"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tblConsultaVentas);
 
         txtTitulo.setEditable(false);
@@ -130,25 +148,6 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         jPanelConsultaVenta.setLayout(jPanelConsultaVentaLayout);
         jPanelConsultaVentaLayout.setHorizontalGroup(
             jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEjemplaresVendidos)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addComponent(txtEjemplaresVendidos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)))
-                .addGap(68, 68, 68)
-                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addComponent(lblTotalRecaudado)
-                        .addGap(83, 83, 83))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(71, 71, 71)))
-                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTotalGanancia)
-                    .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(270, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
@@ -167,15 +166,36 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                                 .addComponent(btnMostrarListaLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(114, 114, 114)
                                 .addComponent(btnConsultarVenta)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 283, Short.MAX_VALUE)
                         .addComponent(btnExportarVenta))
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addComponent(lstLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnVolverMenu)))
                 .addGap(39, 39, 39))
+            .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEjemplaresVendidos)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addComponent(txtEjemplaresVendidos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)))
+                .addGap(68, 68, 68)
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addComponent(lblTotalRecaudado)
+                        .addGap(83, 83, 83))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(71, 71, 71)))
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTotalGanancia)
+                    .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelConsultaVentaLayout.setVerticalGroup(
             jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,18 +219,21 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                         .addComponent(lblTotalRecaudado)
                         .addComponent(lblTotalGanancia))
                     .addComponent(lblEjemplaresVendidos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                    .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
+                        .addGap(0, 292, Short.MAX_VALUE)
                         .addComponent(btnVolverMenu)
                         .addGap(32, 32, 32))
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtEjemplaresVendidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(32, 32, 32)
+                        .addComponent(lstLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -302,6 +325,21 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnExportarVentaActionPerformed
 
+    private void btnMostrarListaLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarListaLibrosActionPerformed
+        DefaultListModel<Libro> modeloLibro = new DefaultListModel<>();
+        sistema.getLibros().forEach(modeloLibro::addElement);
+        lstLibro.setModel(modeloLibro);
+        lstLibro.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JLabel label = new JLabel(value.getIsbn() + " - " + value.getTitulo());
+            if (isSelected) {
+                label.setBackground(list.getSelectionBackground());
+                label.setForeground(list.getSelectionForeground());
+                label.setOpaque(true);
+            }
+            return label;
+        });
+    }//GEN-LAST:event_btnMostrarListaLibrosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -353,6 +391,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
     private javax.swing.JLabel lblISBN;
     private javax.swing.JLabel lblTotalGanancia;
     private javax.swing.JLabel lblTotalRecaudado;
+    private javax.swing.JList<Libro> lstLibro;
     private javax.swing.JTable tblConsultaVentas;
     private javax.swing.JTextField txtEjemplaresVendidos;
     private javax.swing.JTextField txtISBN;
