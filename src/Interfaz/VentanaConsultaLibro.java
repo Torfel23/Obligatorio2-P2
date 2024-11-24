@@ -188,7 +188,7 @@ public class VentanaConsultaLibro extends javax.swing.JFrame {
             JButton button = new JButton();
             String path = libro.getFoto();
             System.out.println(path);
-            if (path.isEmpty() || !(new File(path).exists())) {
+            if ( path == null || path.isEmpty() || !(new File(path).exists())) {
                 button.setText(libro.getIsbn());
             } else {
                 button.setIcon(new ImageIcon(path));
