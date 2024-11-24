@@ -31,6 +31,10 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
     public VentanaConsultaVentas(Sistema sistema) {
         this.sistema = sistema;
         initComponents();
+        initializeSelectionListener();
+        lstLibro.setVisible(false);
+        
+        
     }
 
     /**
@@ -168,13 +172,8 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                                 .addComponent(btnConsultarVenta)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 283, Short.MAX_VALUE)
                         .addComponent(btnExportarVenta))
-                    .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lstLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVolverMenu)))
                 .addGap(39, 39, 39))
             .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
@@ -196,6 +195,12 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                     .addComponent(lblTotalGanancia)
                     .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lstLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelConsultaVentaLayout.setVerticalGroup(
             jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,7 +217,9 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lstLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -222,7 +229,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
-                        .addGap(0, 292, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnVolverMenu)
                         .addGap(32, 32, 32))
                     .addGroup(jPanelConsultaVentaLayout.createSequentialGroup()
@@ -231,9 +238,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                             .addGroup(jPanelConsultaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtTotalRecaudado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtTotalGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(32, 32, 32)
-                        .addComponent(lstLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -255,7 +260,18 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void initializeSelectionListener() {
+    lstLibro.addListSelectionListener(event -> {
+        if (!event.getValueIsAdjusting()) { // Avoid multiple events for a single click
+            Libro selectedLibro = lstLibro.getSelectedValue(); // Get selected item
+            if (selectedLibro != null) {
+                txtISBN.setText(selectedLibro.getIsbn()); // Set ISBN to txtISBN
+            }
+        }
+    });
+}
+    
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
         VentanaMenu menu = new VentanaMenu(sistema);
         menu.setVisible(true);
@@ -324,8 +340,15 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             Logger.getLogger(VentanaConsultaVentas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnExportarVentaActionPerformed
-
+    private boolean isListVisible = false;
+    
     private void btnMostrarListaLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarListaLibrosActionPerformed
+        if (isListVisible) {
+        // Hide the list
+        lstLibro.setVisible(false);
+        btnMostrarListaLibros.setText("Mostrar Lista Libros");
+    } else {
+        // Show the list and populate it
         DefaultListModel<Libro> modeloLibro = new DefaultListModel<>();
         sistema.getLibros().forEach(modeloLibro::addElement);
         lstLibro.setModel(modeloLibro);
@@ -338,11 +361,19 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             }
             return label;
         });
-    }//GEN-LAST:event_btnMostrarListaLibrosActionPerformed
 
+        lstLibro.setVisible(true);
+        btnMostrarListaLibros.setText("Ocultar Lista Libros");
+    }
+    isListVisible = !isListVisible; // Toggle the flag
+    }//GEN-LAST:event_btnMostrarListaLibrosActionPerformed
+    
+    
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
