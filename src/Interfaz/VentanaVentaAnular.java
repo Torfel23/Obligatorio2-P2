@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class VentanaVentaAnular extends javax.swing.JFrame {
 

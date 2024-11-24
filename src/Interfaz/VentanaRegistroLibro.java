@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class VentanaRegistroLibro extends javax.swing.JFrame {
 

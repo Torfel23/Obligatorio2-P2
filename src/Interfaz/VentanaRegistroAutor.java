@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class VentanaRegistroAutor extends javax.swing.JFrame {
 

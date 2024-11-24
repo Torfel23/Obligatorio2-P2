@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class VentanaConsultaLibro extends javax.swing.JFrame {
 

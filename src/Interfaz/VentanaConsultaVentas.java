@@ -333,7 +333,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 String importe = (String) model.getValueAt(i, 5).toString();
 
                 writer.write(fecha + ";" + cliente + ";" + factura + ";" + cantidad + ";" + precio + ";" + importe + "\n");
-                
+                JOptionPane.showMessageDialog(rootPane, "Datos Exportados Correctamente!");
             }
             writer.close();
         } catch (IOException ex) {

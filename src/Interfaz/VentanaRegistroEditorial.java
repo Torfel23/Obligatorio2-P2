@@ -9,6 +9,7 @@ import javax.swing.table.*;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class VentanaRegistroEditorial extends javax.swing.JFrame {
 

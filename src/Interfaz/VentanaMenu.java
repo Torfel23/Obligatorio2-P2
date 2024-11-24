@@ -6,6 +6,7 @@ import Dominio.Sistema;
 /**
  *
  * @author pipetorrendell
+ * @author nicholasdavies
  */
 public class VentanaMenu extends javax.swing.JFrame {
 
