@@ -337,7 +337,7 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
         String fecha = txtFechaVenta.getText();
         String cliente = txtClienteVenta.getText();
 
-        if (fecha.isEmpty() || fecha.matches("\\d{2}/\\d{2}/\\d{2}") || fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
+        if (fecha.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Campo de fecha vacio o no es una fecha", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
