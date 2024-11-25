@@ -166,7 +166,7 @@ public class Sistema implements Serializable {
 
     // Métodos guardar registros
     public boolean guardarEditorial(String nombre, String paisOrigen) {
-        if (nombre == null || nombre.isEmpty() || paisOrigen == null || paisOrigen.isEmpty()) {
+        if (nombre == null || nombre.isEmpty() || paisOrigen == null || paisOrigen.isEmpty() || paisOrigen.matches(".*\\d.*")) {
             return false; // Datos inválidos
         }
 
@@ -180,8 +180,8 @@ public class Sistema implements Serializable {
     }
 
     public boolean guardarGenero(String nombre, String descripcion) {
-        if (nombre == null || nombre.isEmpty() || descripcion == null || descripcion.isEmpty()) {
-            return false; // Datos inválidos
+        if (nombre == null || nombre.isEmpty() || nombre.matches(".*\\d.*") || descripcion == null || descripcion.isEmpty()) {
+            return false;
         }
 
         if (generos.stream().anyMatch(g -> g.getNombre().equalsIgnoreCase(nombre))) {
@@ -190,12 +190,12 @@ public class Sistema implements Serializable {
 
         Genero nuevoGenero = new Genero(nombre, descripcion);
         generos.add(nuevoGenero);
-        return true; // Género agregado con éxito
+        return true;
     }
 
     public boolean guardarAutor(String nombre, String nacionalidad, List<Genero> generos) {
-        if (nombre == null || nombre.isEmpty() || nacionalidad == null || nacionalidad.isEmpty() || generos == null || generos.isEmpty()) {
-            return false; // Datos inválidos
+        if (nombre == null || nombre.isEmpty() || nacionalidad == null || nacionalidad.isEmpty() || nacionalidad.matches(".*\\d.*") || generos == null || generos.isEmpty()) {
+            return false;
         }
 
         if (autores.stream().anyMatch(a -> a.getNombre().equalsIgnoreCase(nombre))) {
@@ -236,9 +236,9 @@ public class Sistema implements Serializable {
 
     public boolean registrarVenta(Venta venta) {
         ventas.add(venta);
-        venta.actualizarStock(); 
-        ultimoNumeroFactura = venta.getNumeroFactura(); 
-        saveData("data/sistema.ser"); 
+        venta.actualizarStock();
+        ultimoNumeroFactura = venta.getNumeroFactura();
+        saveData("data/sistema.ser");
         return true;
     }
 

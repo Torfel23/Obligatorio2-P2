@@ -337,8 +337,8 @@ public class VentanaVentaRegistro extends javax.swing.JFrame {
         String fecha = txtFechaVenta.getText();
         String cliente = txtClienteVenta.getText();
 
-        if (fecha.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Campo de fecha vacio", "Error", JOptionPane.ERROR_MESSAGE);
+        if (fecha.isEmpty() || fecha.matches("\\d{2}/\\d{2}/\\d{2}")) {
+            JOptionPane.showMessageDialog(this, "Campo de fecha vacio o no es una fecha", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Map<Libro, Integer> librosConStock = new HashMap<>();

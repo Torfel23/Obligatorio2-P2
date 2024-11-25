@@ -117,6 +117,7 @@ public class VentanaRegistroEditorial extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblTablaEditoriales.setEnabled(false);
         tblTablaEditoriales.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblTablaEditoriales);
 
